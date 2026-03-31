@@ -1,0 +1,92 @@
+.page {
+  padding-top: 72px;
+  min-height: 100vh;
+}
+
+.header {
+  background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 100%);
+  padding: 80px 0 60px;
+}
+
+.header h1 { color: white; font-size: clamp(28px, 3vw, 42px); margin-bottom: 14px; }
+.headerSub { font-size: 17px; color: rgba(255, 255, 255, 0.65); max-width: 500px; margin: 0 auto; }
+
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 60px 5%;
+  gap: 48px;
+  align-items: start;
+}
+
+/* Info cards */
+.infoCard {
+  background: white;
+  border-radius: var(--radius);
+  padding: 24px;
+  border: 1px solid var(--border);
+  margin-bottom: 16px;
+}
+
+.infoIcon { font-size: 28px; margin-bottom: 12px; }
+.infoCard h3 { font-family: var(--font-display); font-size: 16px; font-weight: 700; color: var(--navy-dark); margin-bottom: 8px; }
+.infoCard p { font-size: 14px; line-height: 1.6; margin-bottom: 10px; }
+.infoCard a { color: var(--orange); font-size: 14px; font-weight: 500; }
+.infoCard a:hover { text-decoration: underline; }
+
+/* Form */
+.formCard {
+  background: white;
+  border-radius: 20px;
+  padding: 40px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-md);
+}
+.formCard h2 { font-size: 24px; margin-bottom: 24px; }
+
+.errorBanner {
+  background: #fff0f0;
+  border: 1px solid #ffcccc;
+  color: #cc0000;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.submitBtn {
+  width: 100%;
+  background: var(--navy);
+  color: white;
+  border: none;
+  padding: 15px;
+  border-radius: 10px;
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s;
+  margin-top: 8px;
+}
+.submitBtn:hover:not(:disabled) { background: var(--navy-light); transform: translateY(-1px); }
+.submitBtn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* Success */
+.successCard {
+  background: white;
+  border-radius: 20px;
+  padding: 60px 40px;
+  text-align: center;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-md);
+}
+.successIcon { font-size: 56px; margin-bottom: 20px; }
+.successCard h2 { font-size: 26px; margin-bottom: 12px; }
+.successCard p { font-size: 15px; color: var(--gray); margin-bottom: 28px; }
+
+@media (max-width: 768px) {
+  .layout { grid-template-columns: 1fr; }
+  .formCard { padding: 28px 20px; }
+}

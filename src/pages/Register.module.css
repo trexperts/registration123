@@ -1,0 +1,163 @@
+.page {
+  padding-top: 72px;
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 60px 5%;
+  gap: 60px;
+  align-items: start;
+}
+
+/* Event info */
+.eventInfo { position: sticky; top: 100px; }
+.eventInfo h1 { font-size: clamp(28px, 3vw, 38px); margin: 12px 0 20px; }
+
+.metaList { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
+.metaItem { display: flex; align-items: center; gap: 10px; font-size: 15px; color: var(--gray); }
+.metaItem span { font-size: 18px; }
+
+.eventDesc { font-size: 15px; line-height: 1.8; margin-bottom: 36px; }
+
+/* Ticket options */
+.ticketList h3 {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--gray);
+  margin-bottom: 12px;
+}
+
+.ticketOption {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 16px;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: white;
+}
+.ticketOption:hover { border-color: var(--navy); }
+.ticketSelected { border-color: var(--navy) !important; background: rgba(26, 51, 153, 0.04) !important; }
+
+.ticketName { font-family: var(--font-display); font-size: 14px; font-weight: 600; color: var(--navy-dark); }
+.ticketPrice { font-family: var(--font-display); font-size: 16px; font-weight: 700; color: var(--orange); }
+
+/* Form */
+.formCard {
+  background: white;
+  border-radius: 20px;
+  padding: 40px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-md);
+}
+
+.formCard h2 { font-size: 24px; margin-bottom: 6px; }
+.formSub { font-size: 14px; color: var(--gray-light); margin-bottom: 28px; }
+
+.errorBanner {
+  background: #fff0f0;
+  border: 1px solid #ffcccc;
+  color: #cc0000;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+/* Order summary */
+.orderSummary {
+  background: var(--bg);
+  border-radius: 10px;
+  padding: 16px;
+  margin: 20px 0;
+  border: 1px solid var(--border);
+}
+.summaryRow {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  padding: 6px 0;
+  color: var(--gray);
+}
+.summaryTotal {
+  border-top: 1px solid var(--border);
+  margin-top: 8px;
+  padding-top: 12px;
+  font-size: 16px;
+  color: var(--navy-dark);
+}
+.summaryTotal strong { color: var(--navy-dark); font-family: var(--font-display); font-size: 18px; }
+
+/* Submit */
+.submitBtn {
+  width: 100%;
+  background: var(--orange);
+  color: white;
+  border: none;
+  padding: 16px;
+  border-radius: 10px;
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.25s;
+  box-shadow: 0 4px 20px rgba(232, 93, 20, 0.3);
+}
+.submitBtn:hover:not(:disabled) {
+  background: var(--orange-light);
+  transform: translateY(-2px);
+}
+.submitBtn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.secureNote {
+  text-align: center;
+  font-size: 12px;
+  color: var(--gray-light);
+  margin-top: 14px;
+}
+
+/* Success */
+.successWrap {
+  min-height: 100vh;
+  padding-top: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 120px 5% 80px;
+}
+.successCard {
+  background: white;
+  border-radius: 20px;
+  padding: 60px 48px;
+  text-align: center;
+  max-width: 480px;
+  width: 100%;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-lg);
+}
+.successIcon { font-size: 60px; margin-bottom: 24px; }
+.successCard h2 { font-size: 28px; margin-bottom: 12px; }
+.successCard p { font-size: 15px; margin-bottom: 8px; }
+.successSub { color: var(--gray-light); font-size: 14px; margin-bottom: 32px !important; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .layout { grid-template-columns: 1fr; gap: 32px; }
+  .eventInfo { position: static; }
+  .formCard { padding: 28px 20px; }
+}

@@ -1,0 +1,156 @@
+.page { padding-top: 72px; background: var(--bg); }
+.sectionLabel { display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--orange); margin-bottom: 14px; }
+.sectionHead { text-align: center; margin-bottom: 56px; }
+.sectionHead h2 { font-size: clamp(26px, 3vw, 38px); margin-bottom: 14px; }
+.sectionSub { font-size: 17px; color: var(--gray); max-width: 560px; margin: 0 auto; line-height: 1.75; }
+
+.header { background: linear-gradient(160deg, #06113a 0%, #0f1f66 100%); padding: 80px 5% 60px; text-align: center; }
+.headerInner { max-width: 700px; margin: 0 auto; }
+.header h1 { font-size: clamp(28px, 3.5vw, 46px); color: white; margin-bottom: 20px; line-height: 1.15; }
+.headerSub { font-size: 17px; color: rgba(255,255,255,0.65); line-height: 1.75; }
+
+/* Differentiators */
+.diff { padding: 100px 5%; background: white; }
+.diffInner { max-width: 1140px; margin: 0 auto; }
+
+.diffGrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+
+.diffCard {
+  background: var(--bg);
+  border-radius: 14px;
+  padding: 28px;
+  border: 1px solid var(--border);
+  transition: all 0.3s;
+}
+.diffCard:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(26,51,153,0.08); }
+.diffIcon { font-size: 32px; margin-bottom: 14px; }
+.diffCard h3 { font-family: var(--font-display); font-size: 17px; font-weight: 700; color: var(--navy-dark); margin-bottom: 10px; }
+.diffCard p { font-size: 14px; line-height: 1.75; color: var(--gray); }
+
+/* Comparison table */
+.comparison { padding: 80px 5%; background: var(--bg); }
+.comparisonInner { max-width: 1000px; margin: 0 auto; }
+
+.tableWrap { overflow-x: auto; border-radius: 14px; border: 1px solid var(--border); box-shadow: 0 4px 20px rgba(26,51,153,0.06); }
+
+.table { width: 100%; border-collapse: collapse; background: white; }
+
+.table thead tr { background: var(--navy-dark); }
+.table th {
+  padding: 16px 20px;
+  text-align: left;
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.8);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.table th:not(:first-child) { text-align: center; }
+
+.usCol { background: rgba(232,93,20,0.06) !important; }
+.table thead .usCol { background: var(--orange) !important; color: white !important; }
+
+.table tbody tr { border-bottom: 1px solid var(--border); transition: background 0.2s; }
+.table tbody tr:last-child { border-bottom: none; }
+.table tbody tr:hover { background: var(--bg); }
+
+.table td { padding: 14px 20px; font-size: 14px; color: var(--gray); }
+.table td:not(:first-child) { text-align: center; }
+
+.yes { color: #16a34a; font-weight: 700; font-size: 18px; }
+.no { color: var(--gray-light); font-size: 18px; }
+
+/* Partnership */
+.partnership { padding: 80px 5%; background: white; }
+.partnershipInner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 40px 1fr 40px 1fr;
+  gap: 20px;
+  align-items: center;
+}
+
+.partnerCard {
+  background: var(--bg);
+  border-radius: 16px;
+  padding: 32px;
+  border: 1px solid var(--border);
+  text-align: center;
+}
+
+.partnerResult {
+  background: var(--navy-dark);
+  border-color: var(--navy-dark);
+}
+.partnerResult h3 { color: white; }
+.partnerResult p { color: rgba(255,255,255,0.65); }
+
+.partnerLogo {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--navy);
+  margin-bottom: 12px;
+}
+.partnerLogo span { color: var(--orange); }
+
+.partnerLogoTrex {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--navy);
+  margin-bottom: 12px;
+  letter-spacing: 2px;
+}
+
+.partnerCard h3 { font-family: var(--font-display); font-size: 16px; font-weight: 700; color: var(--navy-dark); margin-bottom: 10px; }
+.partnerCard p { font-size: 13px; line-height: 1.7; color: var(--gray); }
+
+.partnerPlus, .partnerEquals {
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 800;
+  color: var(--orange);
+  text-align: center;
+}
+
+.resultIcon { font-size: 36px; margin-bottom: 12px; }
+
+/* CTA */
+.cta {
+  background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 100%);
+  padding: 80px 5%;
+  text-align: center;
+}
+.ctaInner {}
+.cta h2 { font-size: clamp(24px, 2.5vw, 36px); margin-bottom: 14px; }
+.cta p { color: rgba(255,255,255,0.65); font-size: 16px; max-width: 480px; margin: 0 auto 36px; line-height: 1.7; }
+.ctaActions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+.ctaBtn {
+  background: var(--orange); color: white;
+  padding: 14px 28px; border-radius: 8px;
+  font-family: var(--font-display); font-size: 15px; font-weight: 700;
+  text-decoration: none; transition: all 0.25s;
+  box-shadow: 0 4px 20px rgba(232,93,20,0.4);
+}
+.ctaBtn:hover { background: var(--orange-light); transform: translateY(-2px); }
+
+.ctaBtnOutline {
+  background: transparent; color: white;
+  padding: 14px 28px; border-radius: 8px;
+  font-family: var(--font-display); font-size: 15px; font-weight: 700;
+  text-decoration: none; border: 2px solid rgba(255,255,255,0.3); transition: all 0.25s;
+}
+.ctaBtnOutline:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.6); transform: translateY(-2px); }
+
+@media (max-width: 1024px) {
+  .partnershipInner { grid-template-columns: 1fr; }
+  .partnerPlus, .partnerEquals { font-size: 28px; text-align: center; }
+}
+@media (max-width: 768px) {
+  .diffGrid { grid-template-columns: 1fr; }
+  .table th, .table td { padding: 12px 14px; font-size: 13px; }
+}
