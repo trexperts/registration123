@@ -1,0 +1,91 @@
+.page {
+  padding-top: 72px;
+  min-height: 100vh;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 120px 5% 80px;
+  position: relative;
+  overflow: hidden;
+}
+
+.card {
+  background: white;
+  border-radius: 20px;
+  padding: 60px 48px;
+  text-align: center;
+  max-width: 520px;
+  width: 100%;
+  border: 1px solid var(--border);
+  box-shadow: 0 20px 60px rgba(26,51,153,0.12);
+  position: relative;
+  z-index: 1;
+}
+
+.iconWrap { margin-bottom: 24px; }
+.icon { font-size: 64px; animation: bounce 0.6s ease; }
+
+@keyframes bounce {
+  0% { transform: scale(0); }
+  60% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+.card h1 { font-family: var(--font-display); font-size: 32px; font-weight: 800; color: var(--navy-dark); margin-bottom: 14px; }
+.sub { font-size: 16px; color: var(--gray); line-height: 1.7; margin-bottom: 28px; }
+
+.confId {
+  background: var(--bg);
+  border-radius: 10px;
+  padding: 14px 20px;
+  margin-bottom: 24px;
+  border: 1px solid var(--border);
+}
+.confId span { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--gray-light); margin-bottom: 4px; }
+.confId strong { font-family: var(--font-display); font-size: 20px; color: var(--navy); }
+
+.details { display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px; text-align: left; }
+.detailItem { display: flex; align-items: center; gap: 14px; background: var(--bg); border-radius: 10px; padding: 14px 16px; border: 1px solid var(--border); }
+.detailItem > span { font-size: 22px; }
+.detailItem div { display: flex; flex-direction: column; }
+.detailItem strong { font-family: var(--font-display); font-size: 14px; font-weight: 700; color: var(--navy-dark); }
+.detailItem span { font-size: 13px; color: var(--gray-light); }
+
+.actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+.btnPrimary {
+  background: var(--orange); color: white;
+  padding: 13px 28px; border-radius: 8px;
+  font-family: var(--font-display); font-size: 15px; font-weight: 700;
+  text-decoration: none; transition: all 0.25s;
+}
+.btnPrimary:hover { background: var(--orange-light); transform: translateY(-2px); }
+
+.btnSecondary {
+  background: transparent; color: var(--navy);
+  padding: 13px 28px; border-radius: 8px;
+  font-family: var(--font-display); font-size: 15px; font-weight: 700;
+  text-decoration: none; border: 2px solid var(--navy); transition: all 0.25s;
+}
+.btnSecondary:hover { background: var(--navy); color: white; }
+
+/* Confetti */
+.confetti { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+.confettiPiece {
+  position: absolute;
+  width: 10px; height: 10px;
+  top: -10px;
+  border-radius: 2px;
+  animation: fall 3s linear forwards;
+}
+
+@keyframes fall {
+  0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
+
+@media (max-width: 480px) {
+  .card { padding: 40px 24px; }
+  .actions { flex-direction: column; }
+}

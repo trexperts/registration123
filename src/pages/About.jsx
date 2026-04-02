@@ -2,70 +2,34 @@ import { Link } from 'react-router-dom'
 import styles from './About.module.css'
 
 const timeline = [
-  {
-    year: '1993',
-    title: 'Technical Registration Experts Founded',
-    desc: 'Kimberly Miller co-founds TREX in Chicago after acquiring Phoenix Solutions, Inc. — bringing deep expertise in meeting management and association software to a new kind of firm.',
-  },
-  {
-    year: '1996',
-    title: 'Jeffrey Miller Joins',
-    desc: 'Jeff Miller joins the team, combining technology expertise with association management knowledge to expand TREX\'s capabilities and client roster.',
-  },
-  {
-    year: '2002',
-    title: 'Partnership with Medical Society Management',
-    desc: 'TREX partners with Medical Society Management, Inc. (MSM) to provide full management solutions to nonprofit medical societies — becoming their official headquarters for client support.',
-  },
-  {
-    year: '2015',
-    title: 'Registration123 Launched',
-    desc: 'Drawing on 22 years of hands-on registration experience, TREX launches Registration123 — a modern, web-based registration platform built by registration professionals, for registration professionals.',
-  },
-  {
-    year: 'Today',
-    title: 'Your Full-Service Registration Partner',
-    desc: 'With over 30 years of combined expertise, Registration123 and TREX serve associations, nonprofits, corporations, and universities nationwide — handling every aspect of event registration so you don\'t have to.',
-  },
+  { year: '1993', title: 'Technical Registration Experts Founded', desc: 'Kimberly Miller co-founds TREX in Chicago after acquiring Phoenix Solutions, Inc. — bringing deep expertise in meeting management and association software to a new kind of firm.' },
+  { year: '1996', title: 'Jeffrey Miller Joins', desc: 'Jeff Miller joins the team, combining technology expertise with association management knowledge to expand TREX\'s capabilities and client roster.' },
+  { year: '2002', title: 'Partnership with Medical Society Management', desc: 'TREX partners with Medical Society Management, Inc. (MSM) to provide full management solutions to nonprofit medical societies — becoming their official headquarters for client support.' },
+  { year: '2015', title: 'Registration123 Launched', desc: 'Drawing on 22 years of hands-on registration experience, TREX launches Registration123 — a modern, web-based registration platform built by registration professionals, for registration professionals.' },
+  { year: 'Today', title: 'Your Full-Service Registration Partner', desc: 'With over 30 years of combined expertise, Registration123 and TREX serve associations, nonprofits, corporations, and universities nationwide — handling every aspect of event registration so you don\'t have to.' },
 ]
 
 const values = [
-  {
-    icon: '🤝',
-    title: 'We Become Your Team',
-    desc: 'We don\'t hand you software and wish you luck. We become an extension of your organization — learning your event, your audience, and your goals inside and out.',
-  },
-  {
-    icon: '🎯',
-    title: 'No One-Size-Fits-All',
-    desc: 'Every event is different. We tailor our tools and services to your specific needs, whether that\'s a 50-person board meeting or a 5,000-person national conference.',
-  },
-  {
-    icon: '📍',
-    title: 'Chicago Roots, Nationwide Reach',
-    desc: 'Headquartered at 1932 S. Halsted St. in Chicago, we\'ve managed events in every corner of the country. Local relationships, national capability.',
-  },
-  {
-    icon: '🔒',
-    title: 'Accountability You Can Count On',
-    desc: 'When you work with us, you have a dedicated team — real people with names and direct lines — who are personally invested in making your event a success.',
-  },
+  { icon: '🤝', title: 'We Become Your Team', desc: 'We don\'t hand you software and wish you luck. We become an extension of your organization — learning your event, your audience, and your goals inside and out.' },
+  { icon: '🎯', title: 'No One-Size-Fits-All', desc: 'Every event is different. We tailor our tools and services to your specific needs, whether that\'s a 50-person board meeting or a 5,000-person national conference.' },
+  { icon: '📍', title: 'Chicago Roots, Nationwide Reach', desc: 'Headquartered at 1932 S. Halsted St. in Chicago, we\'ve managed events in every corner of the country. Local relationships, national capability.' },
+  { icon: '🔒', title: 'Accountability You Can Count On', desc: 'When you work with us, you have a dedicated team — real people with names and direct lines — who are personally invested in making your event a success.' },
 ]
 
 const leadership = [
   {
-    initials: 'KM',
-    color: '#1a3399',
+    initials: 'KM', color: '#1a3399',
     name: 'Kimberly Miller',
     title: 'President & CEO, Technical Registration Experts',
     bio: 'Co-founder of TREX with over 30 years in association management and event registration. Kimberly built TREX from the ground up after learning the industry at Phoenix Solutions, where she trained meeting planners and association executives nationwide.',
+    img: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=200&fit=crop&auto=format',
   },
   {
-    initials: 'JM',
-    color: '#e85d14',
+    initials: 'JM', color: '#e85d14',
     name: 'Jeffrey Miller',
     title: 'Vice President, Technical Registration Experts',
     bio: 'Jeff joined TREX in 1996, bringing a blend of technology expertise and industry knowledge that helped shape both the firm\'s growth and the development of the Registration123 platform.',
+    img: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=200&h=200&fit=crop&auto=format',
   },
 ]
 
@@ -73,16 +37,23 @@ export default function About() {
   return (
     <main className={styles.page}>
 
-      {/* Header */}
+      {/* Header with background image */}
       <section className={styles.header}>
+        <div className={styles.headerBg}>
+          <img
+            src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=1400&h=500&fit=crop&auto=format"
+            alt="Chicago office"
+            className={styles.headerBgImg}
+          />
+          <div className={styles.headerBgOverlay} />
+        </div>
         <div className={styles.headerInner}>
           <span className={styles.sectionLabel}>Our Story</span>
           <h1>30+ Years of Registration Expertise,<br />One Trusted Partnership</h1>
           <p className={styles.headerSub}>
-            Registration123 is powered by Technical Registration Experts (TREX) — a Chicago-based 
-            association management firm founded in 1993. Together, we combine modern registration 
-            technology with decades of on-the-ground experience to handle everything registration 
-            for your organization.
+            Registration123 is powered by Technical Registration Experts (TREX) — a Chicago-based
+            association management firm founded in 1993. Together, we combine modern registration
+            technology with decades of on-the-ground experience.
           </p>
           <div className={styles.headerStats}>
             <div className={styles.hStat}><strong>1993</strong><span>TREX Founded</span></div>
@@ -96,39 +67,26 @@ export default function About() {
         </div>
       </section>
 
-      {/* Mission */}
+      {/* Mission with image */}
       <section className={styles.mission}>
         <div className={styles.missionInner}>
           <div className={styles.missionText}>
             <span className={styles.sectionLabel}>Our Mission</span>
             <h2>We Are Your Registration Office</h2>
-            <p>
-              Most registration companies give you a tool and leave you to figure it out. 
-              We do something different: we become your registration department.
-            </p>
-            <p>
-              From the moment you decide to hold an event, our team is with you — building 
-              your forms, managing your attendees, processing your payments, staffing your 
-              check-in desk, and handling every detail in between.
-            </p>
-            <p>
-              That's the TREX difference. And it's the foundation Registration123 was built on.
-            </p>
+            <p>Most registration companies give you a tool and leave you to figure it out. We do something different: we become your registration department.</p>
+            <p>From the moment you decide to hold an event, our team is with you — building your forms, managing your attendees, processing your payments, staffing your check-in desk, and handling every detail in between.</p>
+            <p>That's the TREX difference. And it's the foundation Registration123 was built on.</p>
             <Link to="/services" className={styles.missionBtn}>See How We Work →</Link>
           </div>
-          <div className={styles.missionCard}>
-            <div className={styles.quoteIcon}>"</div>
-            <p className={styles.quoteText}>
-              We don't believe in one-size-fits-all solutions, and you'll never be just a 
-              number to us. At TREX, we take the time to understand your mission and become 
-              fully invested in your goals. Your organization becomes our priority.
-            </p>
-            <div className={styles.quoteAuthor}>
-              <div className={styles.quoteAvatar} style={{ background: '#1a3399' }}>KM</div>
-              <div>
-                <strong>Kimberly Miller</strong>
-                <span>President & CEO, Technical Registration Experts</span>
-              </div>
+          <div className={styles.missionImgWrap}>
+            <img
+              src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=600&h=500&fit=crop&auto=format"
+              alt="Team working together"
+              className={styles.missionImg}
+            />
+            <div className={styles.missionImgBadge}>
+              <div className={styles.badgeNum}>30+</div>
+              <div className={styles.badgeLabel}>Years of Experience</div>
             </div>
           </div>
         </div>
@@ -162,13 +120,15 @@ export default function About() {
       {/* Values */}
       <section className={styles.values}>
         <div className={styles.valuesInner}>
-          <div className={styles.sectionHead}>
+          <div className={styles.valuesLeft}>
             <span className={styles.sectionLabel}>What We Stand For</span>
             <h2>How We Work</h2>
-            <p className={styles.sectionSub}>
-              These aren't just words on a page — they're the principles that have kept 
-              our clients coming back for 30 years.
-            </p>
+            <p>These aren't just words on a page — they're the principles that have kept our clients coming back for 30 years.</p>
+            <img
+              src="https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?w=500&h=360&fit=crop&auto=format"
+              alt="Team collaboration"
+              className={styles.valuesImg}
+            />
           </div>
           <div className={styles.valuesGrid}>
             {values.map(v => (
@@ -187,12 +147,20 @@ export default function About() {
         <div className={styles.leadershipInner}>
           <div className={styles.sectionHead}>
             <span className={styles.sectionLabel}>Leadership</span>
-            <h2>The People Behind the Platform</h2>
+            <h2 style={{ color: 'white' }}>The People Behind the Platform</h2>
           </div>
           <div className={styles.leaderGrid}>
             {leadership.map(l => (
               <div key={l.name} className={styles.leaderCard}>
-                <div className={styles.leaderAvatar} style={{ background: l.color }}>{l.initials}</div>
+                <div className={styles.leaderImgWrap}>
+                  <img
+                    src={l.img}
+                    alt={l.name}
+                    className={styles.leaderImg}
+                    onError={e => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'flex'; }}
+                  />
+                  <div className={styles.leaderAvatar} style={{ background: l.color, display: 'none' }}>{l.initials}</div>
+                </div>
                 <h3>{l.name}</h3>
                 <div className={styles.leaderTitle}>{l.title}</div>
                 <p>{l.bio}</p>
