@@ -59,8 +59,7 @@ export default function Navbar() {
               className={`${styles.dropdownTrigger} ${isAppsActive ? styles.active : ''}`}
               onClick={() => setAppsOpen(o => !o)}
             >
-              Apps <span className={`${styles.caret} ${appsOpen ? styles.caretOpen : ''}`}>▾</span>
-            </button>
+Apps <span className={`${styles.caret} ${appsOpen ? styles.caretOpen : ''}`} />            </button>
             {appsOpen && (
               <div className={styles.dropdownMenu}>
                 {appLinks.map(a => (
