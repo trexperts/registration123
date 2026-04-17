@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import styles from './Navbar.module.css'
 
@@ -10,9 +10,27 @@ const navLinks = [
   { label: 'FAQ', href: '/faq' },
 ]
 
+const appLinks = [
+  { label: 'Committee Pairing', href: '/committee-match' },
+]
+
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
+  const [appsOpen, setAppsOpen] = useState(false)
   const { pathname } = useLocation()
+  const dropdownRef = useRef(null)
+
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setAppsOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
+
+  const isAppsActive = appLinks.some(a => pathname.startsWith(a.href))
 
   return (
     <nav className={styles.nav}>
@@ -36,6 +54,28 @@ export default function Navbar() {
               <Link to={l.href} className={pathname === l.href ? styles.active : ''}>{l.label}</Link>
             </li>
           ))}
+          <li className={styles.dropdown} ref={dropdownRef}>
+            <button
+              className={`${styles.dropdownTrigger} ${isAppsActive ? styles.active : ''}`}
+              onClick={() => setAppsOpen(o => !o)}
+            >
+              Apps <span className={`${styles.caret} ${appsOpen ? styles.caretOpen : ''}`}>▾</span>
+            </button>
+            {appsOpen && (
+              <div className={styles.dropdownMenu}>
+                {appLinks.map(a => (
+                  <Link
+                    key={a.label}
+                    to={a.href}
+                    className={styles.dropdownItem}
+                    onClick={() => setAppsOpen(false)}
+                  >
+                    {a.label}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </li>
         </ul>
 
         <div className={styles.navRight}>
@@ -54,6 +94,14 @@ export default function Navbar() {
             {l.label}
           </Link>
         ))}
+        <div className={styles.mobileAppsSection}>
+          <span className={styles.mobileAppsLabel}>Apps</span>
+          {appLinks.map(a => (
+            <Link key={a.label} to={a.href} className={styles.mobileAppLink} onClick={() => setMenuOpen(false)}>
+              {a.label}
+            </Link>
+          ))}
+        </div>
         <Link to="/contact" className={styles.mobileCta} onClick={() => setMenuOpen(false)}>
           Request a Demo →
         </Link>

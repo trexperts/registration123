@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conference Hub — Registration123</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #1a3399;
+  --navy-dark: #0f1f66;
+  --navy-light: #2a4ac7;
+  --orange: #e85d14;
+  --orange-light: #ff7a30;
+  --gray: #555f6e;
+  --gray-light: #8a9099;
+  --bg: #f0f2fa;
+  --white: #ffffff;
+  --border: #e2e5f0;
+  --sidebar-w: 260px;
+  --green: #10b981;
+  --red: #ef4444;
+  --yellow: #f59e0b;
+  --purple: #7c3aed;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--gray); overflow-x:hidden; }
+
+/* ── LOGIN ── */
+#login-screen {
+  position:fixed; inset:0; z-index:1000;
+  background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 50%, #1e3a8a 100%);
+  display:flex; align-items:center; justify-content:center;
+}
+.login-bg-grid {
+  position:absolute; inset:0;
+  background-image: linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),
+                    linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);
+  background-size:48px 48px;
+}
+.login-glow {
+  position:absolute; top:-200px; right:-200px;
+  width:600px; height:600px;
+  background: radial-gradient(circle, rgba(232,93,20,0.2) 0%, transparent 65%);
+  pointer-events:none;
+}
+.login-box {
+  position:relative; z-index:1;
+  background:rgba(255,255,255,0.05);
+  backdrop-filter:blur(20px);
+  border:1px solid rgba(255,255,255,0.12);
+  border-radius:24px;
+  padding:52px 44px;
+  width:420px;
+  box-shadow: 0 40px 80px rgba(0,0,0,0.4);
+  animation: loginDrop 0.5s ease both;
+}
+@keyframes loginDrop {
+  from { opacity:0; transform:translateY(-30px) scale(0.97); }
+  to   { opacity:1; transform:translateY(0) scale(1); }
+}
+.login-logo {
+  display:flex; align-items:center; gap:10px; margin-bottom:8px;
+}
+.login-logo-icon {
+  width:44px; height:44px; background:var(--orange); border-radius:10px;
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Sora',sans-serif; font-weight:800; font-size:20px; color:white;
+}
+.login-logo-text { font-family:'Sora',sans-serif; font-size:18px; font-weight:700; color:white; }
+.login-logo-text em { color:var(--orange); font-style:normal; }
+.login-module-label {
+  font-size:12px; font-weight:600; letter-spacing:2px; text-transform:uppercase;
+  color:rgba(255,255,255,0.4); margin-bottom:36px;
+}
+.login-box h2 {
+  font-family:'Sora',sans-serif; font-size:26px; font-weight:800;
+  color:white; margin-bottom:6px;
+}
+.login-box p { font-size:14px; color:rgba(255,255,255,0.5); margin-bottom:32px; }
+.login-field { margin-bottom:16px; }
+.login-field label {
+  display:block; font-size:11px; font-weight:700; letter-spacing:1px;
+  text-transform:uppercase; color:rgba(255,255,255,0.5); margin-bottom:8px;
+}
+.login-field input {
+  width:100%; padding:13px 16px;
+  background:rgba(255,255,255,0.07);
+  border:1.5px solid rgba(255,255,255,0.12);
+  border-radius:10px;
+  color:white; font-family:'DM Sans',sans-serif; font-size:14px;
+  outline:none; transition:border-color 0.2s;
+}
+.login-field input::placeholder { color:rgba(255,255,255,0.3); }
+.login-field input:focus { border-color:var(--orange); background:rgba(255,255,255,0.1); }
+.login-btn {
+  width:100%; margin-top:8px;
+  background:var(--orange); color:white; border:none;
+  padding:15px; border-radius:10px;
+  font-family:'Sora',sans-serif; font-size:15px; font-weight:700;
+  cursor:pointer; transition:all 0.2s;
+  display:flex; align-items:center; justify-content:center; gap:8px;
+}
+.login-btn:hover { background:var(--orange-light); transform:translateY(-1px); box-shadow:0 8px 24px rgba(232,93,20,0.4); }
+.login-hint { margin-top:20px; text-align:center; font-size:12px; color:rgba(255,255,255,0.3); }
+.login-hint span { color:rgba(255,255,255,0.55); }
+
+/* ── APP SHELL ── */
+#app { display:none; min-height:100vh; }
+#app.visible { display:flex; }
+
+/* ── SIDEBAR ── */
+.sidebar {
+  width:var(--sidebar-w); min-height:100vh;
+  background: var(--navy-dark);
+  position:fixed; left:0; top:0; bottom:0;
+  display:flex; flex-direction:column;
+  z-index:50;
+  box-shadow: 4px 0 24px rgba(0,0,0,0.2);
+}
+.sidebar-header {
+  padding:24px 20px 20px;
+  border-bottom:1px solid rgba(255,255,255,0.07);
+}
+.sidebar-logo {
+  display:flex; align-items:center; gap:10px; margin-bottom:4px;
+}
+.sidebar-logo-icon {
+  width:38px; height:38px; background:var(--orange); border-radius:8px;
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Sora',sans-serif; font-weight:800; font-size:17px; color:white;
+}
+.sidebar-logo-text { font-family:'Sora',sans-serif; font-size:15px; font-weight:700; color:white; }
+.sidebar-logo-text em { color:var(--orange); font-style:normal; }
+.sidebar-module-tag {
+  font-size:10px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase;
+  color:rgba(255,255,255,0.3); margin-top:2px;
+}
+.sidebar-event-pill {
+  margin:16px 20px 0;
+  background:rgba(255,255,255,0.06);
+  border-radius:8px; padding:10px 14px;
+  border:1px solid rgba(255,255,255,0.08);
+}
+.sep-ev-label { font-size:10px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:rgba(255,255,255,0.3); }
+.sep-ev-name { font-size:13px; font-weight:600; color:white; margin-top:2px; }
+.sep-ev-date { font-size:11px; color:rgba(255,255,255,0.4); margin-top:1px; }
+
+.sidebar-nav { flex:1; padding:16px 12px; overflow-y:auto; }
+.nav-section-label {
+  font-size:10px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase;
+  color:rgba(255,255,255,0.25); padding:0 8px; margin:16px 0 6px;
+}
+.nav-section-label:first-child { margin-top:0; }
+.nav-item {
+  display:flex; align-items:center; gap:10px;
+  padding:10px 12px; border-radius:9px;
+  cursor:pointer; transition:all 0.18s;
+  margin-bottom:2px; position:relative;
+  text-decoration:none;
+}
+.nav-item:hover { background:rgba(255,255,255,0.07); }
+.nav-item.active { background:var(--orange); }
+.nav-item.active .nav-icon, .nav-item.active .nav-label { color:white; }
+.nav-icon { font-size:16px; width:20px; text-align:center; color:rgba(255,255,255,0.45); }
+.nav-label { font-size:13px; font-weight:500; color:rgba(255,255,255,0.6); flex:1; }
+.nav-item.active .nav-label { font-weight:600; color:white; }
+.nav-badge {
+  background:var(--orange); color:white;
+  font-size:10px; font-weight:700;
+  padding:2px 7px; border-radius:100px;
+  min-width:20px; text-align:center;
+}
+.nav-item.active .nav-badge { background:rgba(255,255,255,0.25); }
+
+.sidebar-footer {
+  padding:16px 12px;
+  border-top:1px solid rgba(255,255,255,0.07);
+}
+.user-row {
+  display:flex; align-items:center; gap:10px;
+  padding:10px 12px; border-radius:9px;
+  cursor:pointer; transition:background 0.18s;
+}
+.user-row:hover { background:rgba(255,255,255,0.07); }
+.user-avatar {
+  width:34px; height:34px; border-radius:50%;
+  background:var(--orange); display:flex; align-items:center; justify-content:center;
+  font-family:'Sora',sans-serif; font-size:13px; font-weight:700; color:white;
+  flex-shrink:0;
+}
+.user-name { font-size:13px; font-weight:600; color:white; }
+.user-role { font-size:11px; color:rgba(255,255,255,0.4); }
+.logout-btn {
+  margin-left:auto; font-size:16px; color:rgba(255,255,255,0.3);
+  background:none; border:none; cursor:pointer;
+  transition:color 0.2s;
+}
+.logout-btn:hover { color:var(--orange); }
+
+/* ── MAIN CONTENT ── */
+.main {
+  margin-left:var(--sidebar-w);
+  flex:1; min-height:100vh;
+  display:flex; flex-direction:column;
+}
+
+/* ── TOPBAR ── */
+.topbar {
+  background:white; border-bottom:1px solid var(--border);
+  padding:0 32px; height:66px;
+  display:flex; align-items:center; justify-content:space-between;
+  position:sticky; top:0; z-index:40;
+}
+.page-breadcrumb {
+  display:flex; align-items:center; gap:8px;
+  font-size:13px; color:var(--gray-light);
+}
+.page-breadcrumb strong { color:var(--navy-dark); font-weight:600; }
+.topbar-actions { display:flex; align-items:center; gap:12px; }
+.topbar-btn {
+  display:flex; align-items:center; gap:6px;
+  padding:8px 16px; border-radius:8px;
+  font-size:13px; font-weight:600; cursor:pointer;
+  border:none; transition:all 0.2s;
+}
+.topbar-btn.ghost { background:transparent; color:var(--gray); border:1.5px solid var(--border); }
+.topbar-btn.ghost:hover { border-color:var(--navy); color:var(--navy); }
+.topbar-btn.primary { background:var(--orange); color:white; }
+.topbar-btn.primary:hover { background:var(--orange-light); }
+.notif-btn {
+  width:36px; height:36px; border-radius:8px;
+  background:var(--bg); border:1.5px solid var(--border);
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; font-size:17px; position:relative;
+  transition:border-color 0.2s;
+}
+.notif-btn:hover { border-color:var(--navy); }
+.notif-dot {
+  position:absolute; top:6px; right:6px;
+  width:8px; height:8px; background:var(--orange);
+  border-radius:50%; border:2px solid white;
+}
+
+/* ── PAGE CONTENT ── */
+.page-content { padding:32px; flex:1; }
+.page { display:none; animation:fadeIn 0.25s ease; }
+.page.active { display:block; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+.page-header { margin-bottom:28px; }
+.page-header h1 {
+  font-family:'Sora',sans-serif; font-size:26px; font-weight:800;
+  color:var(--navy-dark); margin-bottom:4px;
+}
+.page-header p { font-size:14px; color:var(--gray-light); }
+
+/* ── KPI CARDS ── */
+.kpi-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:28px; }
+.kpi-card {
+  background:white; border-radius:14px; padding:22px 24px;
+  border:1px solid var(--border); position:relative; overflow:hidden;
+}
+.kpi-card::after {
+  content:''; position:absolute; top:0; right:0;
+  width:80px; height:80px;
+  background:radial-gradient(circle, rgba(26,51,153,0.05) 0%, transparent 70%);
+}
+.kpi-label { font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--gray-light); margin-bottom:8px; }
+.kpi-value { font-family:'Sora',sans-serif; font-size:28px; font-weight:800; color:var(--navy-dark); margin-bottom:6px; }
+.kpi-delta {
+  font-size:12px; font-weight:600; display:flex; align-items:center; gap:4px;
+}
+.kpi-delta.up { color:var(--green); }
+.kpi-delta.down { color:var(--red); }
+.kpi-delta.neutral { color:var(--gray-light); }
+.kpi-icon {
+  position:absolute; top:20px; right:20px;
+  font-size:22px; opacity:0.15;
+}
+
+/* ── CARDS / PANELS ── */
+.card {
+  background:white; border-radius:14px; border:1px solid var(--border);
+  overflow:hidden; margin-bottom:20px;
+}
+.card-head {
+  padding:18px 24px; border-bottom:1px solid var(--border);
+  display:flex; align-items:center; justify-content:space-between;
+}
+.card-head h3 {
+  font-family:'Sora',sans-serif; font-size:15px; font-weight:700; color:var(--navy-dark);
+}
+.card-head-actions { display:flex; gap:8px; }
+.card-body { padding:24px; }
+
+/* ── TWO COL GRID ── */
+.two-col { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+.three-col { display:grid; grid-template-columns:1fr 1fr 1fr; gap:20px; }
+
+/* ── TABLE ── */
+.data-table { width:100%; border-collapse:collapse; }
+.data-table th {
+  font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase;
+  color:var(--gray-light); padding:10px 16px; text-align:left;
+  border-bottom:1px solid var(--border); background:var(--bg);
+}
+.data-table td { padding:13px 16px; font-size:13px; border-bottom:1px solid var(--border); }
+.data-table tr:last-child td { border-bottom:none; }
+.data-table tr:hover td { background:rgba(26,51,153,0.02); }
+
+/* ── PILLS / BADGES ── */
+.pill {
+  display:inline-flex; align-items:center; gap:5px;
+  padding:3px 10px; border-radius:100px;
+  font-size:11px; font-weight:700;
+}
+.pill.green { background:rgba(16,185,129,0.1); color:#059669; }
+.pill.orange { background:rgba(232,93,20,0.1); color:var(--orange); }
+.pill.blue { background:rgba(26,51,153,0.1); color:var(--navy); }
+.pill.red { background:rgba(239,68,68,0.1); color:var(--red); }
+.pill.yellow { background:rgba(245,158,11,0.1); color:#d97706; }
+.pill.purple { background:rgba(124,58,237,0.1); color:var(--purple); }
+.pill.gray { background:rgba(138,144,153,0.12); color:var(--gray); }
+
+/* ── PROGRESS BAR ── */
+.progress-wrap { margin-bottom:16px; }
+.progress-label {
+  display:flex; justify-content:space-between; align-items:center;
+  font-size:13px; margin-bottom:7px;
+}
+.progress-label span { color:var(--gray); }
+.progress-label strong { color:var(--navy-dark); font-size:13px; }
+.progress-bar { height:7px; background:var(--bg); border-radius:100px; overflow:hidden; }
+.progress-fill { height:100%; border-radius:100px; background:var(--navy); transition:width 1s ease; }
+.progress-fill.orange { background:var(--orange); }
+.progress-fill.green { background:var(--green); }
+
+/* ── AVATAR STACK ── */
+.avatar-stack { display:flex; }
+.av-sm {
+  width:28px; height:28px; border-radius:50%; border:2px solid white;
+  background:var(--navy); display:flex; align-items:center; justify-content:center;
+  font-size:10px; font-weight:700; color:white; margin-left:-8px;
+  flex-shrink:0;
+}
+.av-sm:first-child { margin-left:0; }
+.av-sm.orange { background:var(--orange); }
+.av-sm.green { background:var(--green); }
+.av-sm.purple { background:var(--purple); }
+
+/* ── TIMELINE ── */
+.timeline { position:relative; padding-left:28px; }
+.timeline::before {
+  content:''; position:absolute; left:8px; top:4px; bottom:4px;
+  width:2px; background:var(--border);
+}
+.tl-item { position:relative; margin-bottom:20px; }
+.tl-dot {
+  position:absolute; left:-24px; top:3px;
+  width:12px; height:12px; border-radius:50%;
+  border:2px solid white; box-shadow:0 0 0 2px var(--border);
+}
+.tl-dot.green { background:var(--green); }
+.tl-dot.orange { background:var(--orange); }
+.tl-dot.blue { background:var(--navy); }
+.tl-dot.gray { background:var(--border); }
+.tl-date { font-size:11px; color:var(--gray-light); margin-bottom:3px; }
+.tl-title { font-size:13px; font-weight:600; color:var(--navy-dark); margin-bottom:2px; }
+.tl-desc { font-size:12px; color:var(--gray-light); }
+
+/* ── STAT ROW ── */
+.stat-row {
+  display:flex; justify-content:space-between; align-items:center;
+  padding:12px 0; border-bottom:1px solid var(--border);
+}
+.stat-row:last-child { border-bottom:none; }
+.stat-row-label { font-size:13px; color:var(--gray); }
+.stat-row-val { font-family:'Sora',sans-serif; font-size:15px; font-weight:700; color:var(--navy-dark); }
+
+/* ── MINI CHART (CSS bars) ── */
+.mini-bars { display:flex; align-items:flex-end; gap:4px; height:50px; }
+.mini-bar {
+  flex:1; border-radius:3px 3px 0 0;
+  background:var(--navy); opacity:0.15; transition:opacity 0.2s;
+}
+.mini-bar.active { opacity:1; background:var(--orange); }
+.mini-bar:hover { opacity:0.8; cursor:pointer; }
+
+/* ── DONUT (CSS) ── */
+.donut-wrap { display:flex; align-items:center; gap:24px; }
+.donut {
+  width:90px; height:90px; border-radius:50%; flex-shrink:0;
+  background: conic-gradient(var(--orange) 0% 38%, var(--navy) 38% 72%, var(--green) 72% 88%, var(--gray-light) 88% 100%);
+  position:relative;
+}
+.donut::after {
+  content:''; position:absolute; inset:18px;
+  background:white; border-radius:50%;
+}
+.donut-legend { flex:1; }
+.legend-item {
+  display:flex; align-items:center; gap:8px; margin-bottom:8px; font-size:12px;
+}
+.legend-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+
+/* ── TASK LIST ── */
+.task-item {
+  display:flex; align-items:flex-start; gap:12px;
+  padding:12px 0; border-bottom:1px solid var(--border);
+}
+.task-item:last-child { border-bottom:none; }
+.task-check {
+  width:18px; height:18px; border-radius:5px; flex-shrink:0; margin-top:1px;
+  display:flex; align-items:center; justify-content:center; font-size:10px;
+  cursor:pointer;
+}
+.task-check.done { background:var(--green); color:white; }
+.task-check.todo { border:2px solid var(--border); }
+.task-check.todo:hover { border-color:var(--navy); }
+.task-text { flex:1; }
+.task-title { font-size:13px; font-weight:500; color:var(--navy-dark); margin-bottom:2px; }
+.task-title.done { text-decoration:line-through; color:var(--gray-light); }
+.task-meta { font-size:11px; color:var(--gray-light); display:flex; gap:10px; }
+.task-due { font-size:11px; color:var(--gray-light); white-space:nowrap; }
+
+/* ── SPEAKER CARD ── */
+.speaker-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+.speaker-card {
+  background:white; border:1px solid var(--border); border-radius:12px;
+  padding:20px; text-align:center; transition:all 0.2s;
+}
+.speaker-card:hover { transform:translateY(-3px); box-shadow:0 12px 30px rgba(26,51,153,0.1); }
+.speaker-av {
+  width:56px; height:56px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Sora',sans-serif; font-size:20px; font-weight:700; color:white;
+  margin:0 auto 12px;
+}
+.speaker-name { font-family:'Sora',sans-serif; font-size:14px; font-weight:700; color:var(--navy-dark); margin-bottom:2px; }
+.speaker-title { font-size:12px; color:var(--gray-light); margin-bottom:10px; line-height:1.4; }
+
+/* ── EXHIBITOR ROW ── */
+.exhibitor-row { display:flex; align-items:center; gap:16px; padding:14px 0; border-bottom:1px solid var(--border); }
+.exhibitor-row:last-child { border-bottom:none; }
+.exhibitor-logo {
+  width:44px; height:44px; border-radius:10px; border:1.5px solid var(--border);
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Sora',sans-serif; font-size:13px; font-weight:800;
+  flex-shrink:0; color:white;
+}
+.exhibitor-info { flex:1; }
+.exhibitor-name { font-size:14px; font-weight:600; color:var(--navy-dark); margin-bottom:2px; }
+.exhibitor-tier { font-size:12px; color:var(--gray-light); }
+.exhibitor-amount { font-family:'Sora',sans-serif; font-size:15px; font-weight:700; color:var(--navy-dark); }
+
+/* ── BUDGET ROW ── */
+.budget-row { display:flex; align-items:center; gap:12px; padding:13px 0; border-bottom:1px solid var(--border); }
+.budget-row:last-child { border-bottom:none; }
+.budget-cat { flex:1; font-size:13px; color:var(--gray); }
+.budget-budgeted { font-size:13px; color:var(--gray-light); width:90px; text-align:right; }
+.budget-actual { font-size:13px; font-weight:600; color:var(--navy-dark); width:90px; text-align:right; }
+.budget-var { font-size:12px; font-weight:700; width:70px; text-align:right; }
+.budget-var.over { color:var(--red); }
+.budget-var.under { color:var(--green); }
+
+/* ── VENUE CARD ── */
+.venue-card {
+  background:white; border:1px solid var(--border); border-radius:12px; overflow:hidden;
+  transition:all 0.2s;
+}
+.venue-card:hover { transform:translateY(-3px); box-shadow:0 12px 30px rgba(26,51,153,0.1); }
+.venue-thumb {
+  height:100px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:36px;
+}
+.venue-body { padding:16px; }
+.venue-name { font-family:'Sora',sans-serif; font-size:14px; font-weight:700; color:var(--navy-dark); margin-bottom:4px; }
+.venue-loc { font-size:12px; color:var(--gray-light); margin-bottom:12px; }
+
+/* ── SCROLL ── */
+::-webkit-scrollbar { width:5px; }
+::-webkit-scrollbar-track { background:transparent; }
+::-webkit-scrollbar-thumb { background:var(--border); border-radius:10px; }
+
+/* ── EMPTY STATE ── */
+.empty-state { text-align:center; padding:60px 20px; color:var(--gray-light); }
+.empty-state .icon { font-size:48px; margin-bottom:16px; opacity:0.4; }
+.empty-state h3 { font-family:'Sora',sans-serif; font-size:16px; font-weight:700; color:var(--gray); margin-bottom:6px; }
+.empty-state p { font-size:13px; }
+
+/* ── FORM ELEMENTS (inline) ── */
+.form-row-inline { display:flex; gap:12px; margin-bottom:16px; flex-wrap:wrap; }
+.f-group { flex:1; min-width:160px; }
+.f-group label { display:block; font-size:11px; font-weight:700; letter-spacing:0.8px; text-transform:uppercase; color:var(--gray-light); margin-bottom:6px; }
+.f-group input, .f-group select, .f-group textarea {
+  width:100%; padding:10px 12px;
+  border:1.5px solid var(--border); border-radius:8px;
+  font-family:'DM Sans',sans-serif; font-size:13px; color:var(--navy-dark);
+  outline:none; transition:border-color 0.2s; background:var(--bg);
+}
+.f-group input:focus, .f-group select:focus { border-color:var(--navy); background:white; }
+
+/* ── SECTION DIVIDER ── */
+.sec-divider {
+  display:flex; align-items:center; gap:12px; margin:24px 0 20px;
+}
+.sec-divider h3 { font-family:'Sora',sans-serif; font-size:14px; font-weight:700; color:var(--navy-dark); white-space:nowrap; }
+.sec-divider::after { content:''; flex:1; height:1px; background:var(--border); }
+
+/* ── DASHBOARD OVERVIEW SPECIFIC ── */
+.overview-grid { display:grid; grid-template-columns:2fr 1fr; gap:20px; }
+.activity-item {
+  display:flex; gap:12px; padding:12px 0; border-bottom:1px solid var(--border); align-items:flex-start;
+}
+.activity-item:last-child { border-bottom:none; }
+.activity-icon { width:34px; height:34px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:15px; flex-shrink:0; }
+.activity-icon.orange { background:rgba(232,93,20,0.1); }
+.activity-icon.blue { background:rgba(26,51,153,0.1); }
+.activity-icon.green { background:rgba(16,185,129,0.1); }
+.activity-icon.purple { background:rgba(124,58,237,0.1); }
+.activity-text { flex:1; }
+.activity-title { font-size:13px; font-weight:500; color:var(--navy-dark); margin-bottom:1px; }
+.activity-time { font-size:11px; color:var(--gray-light); }
+.activity-badge { font-size:11px; font-weight:600; }
+</style>
+</head>
+<body>
+
+<!-- ══════════ LOGIN ══════════ -->
+<div id="login-screen">
+  <div class="login-bg-grid"></div>
+  <div class="login-glow"></div>
+  <div class="login-box">
+    <div class="login-logo">
+      <div class="login-logo-icon">R</div>
+      <div class="login-logo-text">Registration<em>123</em></div>
+    </div>
+    <div class="login-module-label">Conference Hub</div>
+    <h2>Welcome back</h2>
+    <p>Sign in to manage your conference</p>
+    <div class="login-field">
+      <label>Email Address</label>
+      <input type="email" placeholder="you@organization.com" id="login-email" value="admin@registration123.com" />
+    </div>
+    <div class="login-field">
+      <label>Password</label>
+      <input type="password" placeholder="••••••••" id="login-pw" value="password" />
+    </div>
+    <button class="login-btn" onclick="doLogin()">
+      Sign In to Conference Hub
+      <svg width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <p class="login-hint">Demo credentials pre-filled — just click <span>Sign In</span></p>
+  </div>
+</div>
+
+<!-- ══════════ APP ══════════ -->
+<div id="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <div class="sidebar-logo-icon">R</div>
+        <div class="sidebar-logo-text">Registration<em>123</em></div>
+      </div>
+      <div class="sidebar-module-tag">Conference Hub</div>
+      <div class="sidebar-event-pill">
+        <div class="sep-ev-label">Active Conference</div>
+        <div class="sep-ev-name">Annual Tech Summit 2026</div>
+        <div class="sep-ev-date">Oct 14–16, 2026 · Chicago, IL</div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Overview</div>
+      <div class="nav-item active" onclick="showPage('dashboard',this)">
+        <span class="nav-icon">🏠</span>
+        <span class="nav-label">Dashboard</span>
+      </div>
+
+      <div class="nav-section-label">Core Modules</div>
+      <div class="nav-item" onclick="showPage('platform',this)">
+        <span class="nav-icon">🖥️</span>
+        <span class="nav-label">Technology & Platform</span>
+      </div>
+      <div class="nav-item" onclick="showPage('program',this)">
+        <span class="nav-icon">🎤</span>
+        <span class="nav-label">Program & Speakers</span>
+        <span class="nav-badge">12</span>
+      </div>
+      <div class="nav-item" onclick="showPage('exhibitors',this)">
+        <span class="nav-icon">🏢</span>
+        <span class="nav-label">Exhibitors & Sponsors</span>
+        <span class="nav-badge">8</span>
+      </div>
+      <div class="nav-item" onclick="showPage('marketing',this)">
+        <span class="nav-icon">📣</span>
+        <span class="nav-label">Marketing & Growth</span>
+      </div>
+      <div class="nav-item" onclick="showPage('finance',this)">
+        <span class="nav-icon">💰</span>
+        <span class="nav-label">Financial Management</span>
+      </div>
+      <div class="nav-item" onclick="showPage('venue',this)">
+        <span class="nav-icon">📍</span>
+        <span class="nav-label">Venue & On-Site</span>
+      </div>
+      <div class="nav-item" onclick="showPage('governance',this)">
+        <span class="nav-icon">📋</span>
+        <span class="nav-label">Governance & PMO</span>
+        <span class="nav-badge">3</span>
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-row">
+        <div class="user-avatar">JM</div>
+        <div>
+          <div class="user-name">J. Miller</div>
+          <div class="user-role">Conference Admin</div>
+        </div>
+        <button class="logout-btn" onclick="doLogout()" title="Sign out">⎋</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <div class="topbar">
+      <div class="page-breadcrumb">
+        Conference Hub &rsaquo; <strong id="topbar-title">Dashboard</strong>
+      </div>
+      <div class="topbar-actions">
+        <div class="notif-btn"><span>🔔</span><span class="notif-dot"></span></div>
+        <button class="topbar-btn ghost">Export</button>
+        <button class="topbar-btn primary" id="topbar-cta">+ New Conference</button>
+      </div>
+    </div>
+
+    <div class="page-content">
+
+      <!-- ══ DASHBOARD ══ -->
+      <div class="page active" id="page-dashboard">
+        <div class="page-header">
+          <h1>Conference Dashboard</h1>
+          <p>Annual Tech Summit 2026 — Oct 14–16 · 178 days to go</p>
+        </div>
+
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-icon">👥</div>
+            <div class="kpi-label">Registrations</div>
+            <div class="kpi-value">1,247</div>
+            <div class="kpi-delta up">↑ 18% vs last year</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon">💰</div>
+            <div class="kpi-label">Revenue</div>
+            <div class="kpi-value">$284K</div>
+            <div class="kpi-delta up">↑ 12% ahead of pace</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon">🎤</div>
+            <div class="kpi-label">Speakers Confirmed</div>
+            <div class="kpi-value">38 / 52</div>
+            <div class="kpi-delta neutral">14 pending confirmation</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon">🏢</div>
+            <div class="kpi-label">Sponsors Secured</div>
+            <div class="kpi-value">$180K</div>
+            <div class="kpi-delta up">↑ $60K goal remaining</div>
+          </div>
+        </div>
+
+        <div class="overview-grid">
+          <div>
+            <div class="card">
+              <div class="card-head">
+                <h3>Registration Pace</h3>
+                <span class="pill blue">On Track</span>
+              </div>
+              <div class="card-body">
+                <div class="progress-wrap">
+                  <div class="progress-label"><span>Total Registrations</span><strong>1,247 / 2,000</strong></div>
+                  <div class="progress-bar"><div class="progress-fill" style="width:62%"></div></div>
+                </div>
+                <div class="progress-wrap">
+                  <div class="progress-label"><span>VIP / Premium</span><strong>142 / 300</strong></div>
+                  <div class="progress-bar"><div class="progress-fill orange" style="width:47%"></div></div>
+                </div>
+                <div class="progress-wrap">
+                  <div class="progress-label"><span>Virtual Access</span><strong>389 / 500</strong></div>
+                  <div class="progress-bar"><div class="progress-fill green" style="width:78%"></div></div>
+                </div>
+                <div style="margin-top:20px;">
+                  <div class="sec-divider"><h3>Weekly Registrations</h3></div>
+                  <div class="mini-bars" style="height:60px">
+                    <div class="mini-bar" style="height:35%"></div>
+                    <div class="mini-bar" style="height:48%"></div>
+                    <div class="mini-bar" style="height:42%"></div>
+                    <div class="mini-bar" style="height:60%"></div>
+                    <div class="mini-bar" style="height:55%"></div>
+                    <div class="mini-bar" style="height:78%"></div>
+                    <div class="mini-bar" style="height:65%"></div>
+                    <div class="mini-bar" style="height:85%"></div>
+                    <div class="mini-bar" style="height:72%"></div>
+                    <div class="mini-bar active" style="height:90%"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-head"><h3>Recent Activity</h3></div>
+              <div class="card-body" style="padding-top:8px;padding-bottom:8px;">
+                <div class="activity-item">
+                  <div class="activity-icon orange">🎤</div>
+                  <div class="activity-text">
+                    <div class="activity-title">Speaker bio received — <strong>Dr. Sarah Chen</strong></div>
+                    <div class="activity-time">2 minutes ago · Keynote track</div>
+                  </div>
+                  <span class="pill green">New</span>
+                </div>
+                <div class="activity-item">
+                  <div class="activity-icon blue">💳</div>
+                  <div class="activity-text">
+                    <div class="activity-title">Platinum sponsorship confirmed — <strong>TechCorp Inc.</strong></div>
+                    <div class="activity-time">1 hour ago · $40,000</div>
+                  </div>
+                  <span class="pill green">Paid</span>
+                </div>
+                <div class="activity-item">
+                  <div class="activity-icon green">✅</div>
+                  <div class="activity-text">
+                    <div class="activity-title">Venue contract executed — <strong>Chicago Convention Center</strong></div>
+                    <div class="activity-time">Yesterday · Main ballroom + 8 breakouts</div>
+                  </div>
+                  <span class="pill blue">Done</span>
+                </div>
+                <div class="activity-item">
+                  <div class="activity-icon purple">📧</div>
+                  <div class="activity-text">
+                    <div class="activity-title">Email campaign sent — <strong>Early Bird Reminder</strong></div>
+                    <div class="activity-time">2 days ago · 12,400 recipients · 28% open rate</div>
+                  </div>
+                  <span class="pill orange">Marketing</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="card" style="margin-bottom:20px">
+              <div class="card-head"><h3>Module Status</h3></div>
+              <div class="card-body" style="padding-top:8px;padding-bottom:8px;">
+                <div class="stat-row"><span class="stat-row-label">🖥️ Platform Setup</span><span class="pill green">Complete</span></div>
+                <div class="stat-row"><span class="stat-row-label">🎤 Speaker Mgmt</span><span class="pill yellow">In Progress</span></div>
+                <div class="stat-row"><span class="stat-row-label">🏢 Exhibitor Portal</span><span class="pill green">Complete</span></div>
+                <div class="stat-row"><span class="stat-row-label">📣 Marketing</span><span class="pill yellow">In Progress</span></div>
+                <div class="stat-row"><span class="stat-row-label">💰 Finance</span><span class="pill blue">On Track</span></div>
+                <div class="stat-row"><span class="stat-row-label">📍 Venue</span><span class="pill green">Contracted</span></div>
+                <div class="stat-row"><span class="stat-row-label">📋 Governance</span><span class="pill orange">Action Needed</span></div>
+              </div>
+            </div>
+
+            <div class="card" style="margin-bottom:20px">
+              <div class="card-head"><h3>Revenue Mix</h3></div>
+              <div class="card-body">
+                <div class="donut-wrap">
+                  <div class="donut"></div>
+                  <div class="donut-legend">
+                    <div class="legend-item"><div class="legend-dot" style="background:var(--orange)"></div><span style="font-size:12px">Registration <strong>38%</strong></span></div>
+                    <div class="legend-item"><div class="legend-dot" style="background:var(--navy)"></div><span style="font-size:12px">Sponsorships <strong>34%</strong></span></div>
+                    <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div><span style="font-size:12px">Exhibitors <strong>16%</strong></span></div>
+                    <div class="legend-item"><div class="legend-dot" style="background:var(--gray-light)"></div><span style="font-size:12px">Other <strong>12%</strong></span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-head"><h3>Key Dates</h3></div>
+              <div class="card-body" style="padding-top:8px">
+                <div class="timeline">
+                  <div class="tl-item"><div class="tl-dot green"></div><div class="tl-date">Apr 1, 2026</div><div class="tl-title">Speaker submissions close</div></div>
+                  <div class="tl-item"><div class="tl-dot orange"></div><div class="tl-date">May 15, 2026</div><div class="tl-title">Early bird pricing ends</div></div>
+                  <div class="tl-item"><div class="tl-dot blue"></div><div class="tl-date">Jul 1, 2026</div><div class="tl-title">Program schedule published</div></div>
+                  <div class="tl-item"><div class="tl-dot blue"></div><div class="tl-date">Sep 1, 2026</div><div class="tl-title">Final agenda locked</div></div>
+                  <div class="tl-item"><div class="tl-dot gray"></div><div class="tl-date">Oct 14–16, 2026</div><div class="tl-title">Conference days</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ PLATFORM ══ -->
+      <div class="page" id="page-platform">
+        <div class="page-header">
+          <h1>Conference Technology & Platform</h1>
+          <p>Registration, payments, portals, check-in, reporting, and integrations</p>
+        </div>
+        <div class="kpi-grid">
+          <div class="kpi-card"><div class="kpi-icon">🎟️</div><div class="kpi-label">Registrations</div><div class="kpi-value">1,247</div><div class="kpi-delta up">↑ 62% of capacity</div></div>
+          <div class="kpi-card"><div class="kpi-icon">💳</div><div class="kpi-label">Payments Processed</div><div class="kpi-value">$197K</div><div class="kpi-delta up">↑ 99.2% success rate</div></div>
+          <div class="kpi-card"><div class="kpi-icon">📱</div><div class="kpi-label">App Downloads</div><div class="kpi-value">834</div><div class="kpi-delta neutral">67% of registrants</div></div>
+          <div class="kpi-card"><div class="kpi-icon">⚡</div><div class="kpi-label">Platform Uptime</div><div class="kpi-value">99.9%</div><div class="kpi-delta up">↑ All systems normal</div></div>
+        </div>
+        <div class="two-col">
+          <div class="card">
+            <div class="card-head"><h3>Registration Portal</h3><span class="pill green">● Live</span></div>
+            <div class="card-body">
+              <div class="stat-row"><span class="stat-row-label">Registration Page URL</span><span style="font-size:12px;color:var(--navy)">reg123.com/techsummit26</span></div>
+              <div class="stat-row"><span class="stat-row-label">Form Submissions Today</span><span class="stat-row-val">47</span></div>
+              <div class="stat-row"><span class="stat-row-label">Conversion Rate</span><span class="stat-row-val">34.2%</span></div>
+              <div class="stat-row"><span class="stat-row-label">Avg. Checkout Time</span><span class="stat-row-val">3m 42s</span></div>
+              <div class="stat-row"><span class="stat-row-label">Payment Processor</span><span class="pill blue">Stripe</span></div>
+              <div class="stat-row"><span class="stat-row-label">Ticket Types Active</span><span class="stat-row-val">4</span></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-head"><h3>Attendee Portals</h3></div>
+            <div class="card-body">
+              <div class="stat-row"><span class="stat-row-label">🎟️ Attendee Portal</span><span class="pill green">Active</span></div>
+              <div class="stat-row"><span class="stat-row-label">🎤 Speaker Portal</span><span class="pill green">Active</span></div>
+              <div class="stat-row"><span class="stat-row-label">🏢 Exhibitor Portal</span><span class="pill green">Active</span></div>
+              <div class="stat-row"><span class="stat-row-label">👤 Admin Dashboard</span><span class="pill green">Active</span></div>
+              <div class="stat-row"><span class="stat-row-label">Active Portal Sessions</span><span class="stat-row-val">128</span></div>
+              <div class="stat-row"><span class="stat-row-label">Badge Generation</span><span class="pill blue">QR + Print</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="two-col">
+          <div class="card">
+            <div class="card-head"><h3>On-Site Check-In</h3></div>
+            <div class="card-body">
+              <div class="progress-wrap">
+                <div class="progress-label"><span>Check-In Readiness</span><strong>82%</strong></div>
+                <div class="progress-bar"><div class="progress-fill green" style="width:82%"></div></div>
+              </div>
+              <div class="stat-row"><span class="stat-row-label">QR Scanner Devices</span><span class="stat-row-val">12 configured</span></div>
+              <div class="stat-row"><span class="stat-row-label">Badge Printers</span><span class="stat-row-val">4 printers</span></div>
+              <div class="stat-row"><span class="stat-row-label">Check-In Staff</span><span class="stat-row-val">8 volunteers</span></div>
+              <div class="stat-row"><span class="stat-row-label">Offline Mode</span><span class="pill green">Enabled</span></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-head"><h3>Integrations</h3></div>
+            <div class="card-body" style="padding-top:8px;padding-bottom:8px;">
+              <div class="stat-row"><span class="stat-row-label">Stripe Payments</span><span class="pill green">Connected</span></div>
+              <div class="stat-row"><span class="stat-row-label">Mailchimp</span><span class="pill green">Connected</span></div>
+              <div class="stat-row"><span class="stat-row-label">Zoom Webinar</span><span class="pill green">Connected</span></div>
+              <div class="stat-row"><span class="stat-row-label">Salesforce CRM</span><span class="pill yellow">Pending</span></div>
+              <div class="stat-row"><span class="stat-row-label">HubSpot</span><span class="pill gray">Not Connected</span></div>
+              <div class="stat-row"><span class="stat-row-label">Google Analytics</span><span class="pill green">Connected</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ PROGRAM & SPEAKERS ══ -->
+      <div class="page" id="page-program">
+        <div class="page-header">
+          <h1>Program & Speaker Management</h1>
+          <p>Submissions, bios, disclosures, scheduling, and CE documentation</p>
+        </div>
+        <div class="kpi-grid">
+          <div class="kpi-card"><div class="kpi-icon">📬</div><div class="kpi-label">Submissions</div><div class="kpi-value">147</div><div class="kpi-delta neutral">Call closes Apr 1</div></div>
+          <div class="kpi-card"><div class="kpi-icon">✅</div><div class="kpi-label">Confirmed Speakers</div><div class="kpi-value">38</div><div class="kpi-delta up">↑ 14 pending</div></div>
+          <div class="kpi-card"><div class="kpi-icon">📅</div><div class="kpi-label">Sessions Scheduled</div><div class="kpi-value">44 / 60</div><div class="kpi-delta neutral">16 unscheduled</div></div>
+          <div class="kpi-card"><div class="kpi-icon">🎓</div><div class="kpi-label">CE Credits Filed</div><div class="kpi-value">18.5 hrs</div><div class="kpi-delta up">↑ Submitted to board</div></div>
+        </div>
+        <div class="card" style="margin-bottom:20px">
+          <div class="card-head">
+            <h3>Speaker Roster</h3>
+            <div class="card-head-actions">
+              <button class="topbar-btn ghost" style="font-size:12px;padding:6px 12px;">Filter</button>
+              <button class="topbar-btn primary" style="font-size:12px;padding:6px 12px;">+ Add Speaker</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="speaker-grid">
+              <div class="speaker-card"><div class="speaker-av" style="background:var(--navy)">SC</div><div class="speaker-name">Dr. Sarah Chen</div><div class="speaker-title">VP Engineering, FutureTech</div><span class="pill green">Confirmed</span></div>
+              <div class="speaker-card"><div class="speaker-av" style="background:var(--orange)">MR</div><div class="speaker-name">Marcus Rivera</div><div class="speaker-title">AI Research Lead, DeepMind</div><span class="pill green">Confirmed</span></div>
+              <div class="speaker-card"><div class="speaker-av" style="background:var(--purple)">LP</div><div class="speaker-name">Lisa Park</div><div class="speaker-title">CTO, Innovate Chicago</div><span class="pill yellow">Bio Pending</span></div>
+              <div class="speaker-card"><div class="speaker-av" style="background:var(--green)">JW</div><div class="speaker-name">James Wong</div><div class="speaker-title">Director, Cloud Strategy</div><span class="pill green">Confirmed</span></div>
+              <div class="speaker-card"><div class="speaker-av" style="background:#e11d48">AK</div><div class="speaker-name">Amara Khan</div><div class="speaker-title">Founder, DataFirst Labs</div><span class="pill orange">Disclosure Due</span></div>
+              <div class="speaker-card"><div class="speaker-av" style="background:#0891b2">TB</div><div class="speaker-name">Tom Brennan</div><div class="speaker-title">Partner, Venture Capital</div><span class="pill yellow">Awaiting Consent</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="two-col">
+          <div class="card">
+            <div class="card-head"><h3>Abstract Submissions</h3></div>
+            <div class="card-body" style="padding-top:4px;padding-bottom:4px;">
+              <table class="data-table">
+                <thead><tr><th>Title</th><th>Track</th><th>Status</th></tr></thead>
+                <tbody>
+                  <tr><td>AI in Healthcare Delivery</td><td><span class="pill blue">Keynote</span></td><td><span class="pill green">Accepted</span></td></tr>
+                  <tr><td>Cloud Security in 2026</td><td><span class="pill purple">Workshop</span></td><td><span class="pill green">Accepted</span></td></tr>
+                  <tr><td>Startup Funding Landscape</td><td><span class="pill orange">Panel</span></td><td><span class="pill yellow">Under Review</span></td></tr>
+                  <tr><td>DevOps at Scale</td><td><span class="pill blue">Breakout</span></td><td><span class="pill yellow">Under Review</span></td></tr>
+                  <tr><td>Women in Tech 2026</td><td><span class="pill green">Special</span></td><td><span class="pill green">Accepted</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-head"><h3>Speaker Checklist</h3></div>
+            <div class="card-body" style="padding-top:4px;padding-bottom:4px;">
+              <div class="task-item"><div class="task-check done">✓</div><div class="task-text"><div class="task-title done">Send speaker invitation emails</div><div class="task-meta"><span>All 52 invited</span></div></div></div>
+              <div class="task-item"><div class="task-check done">✓</div><div class="task-text"><div class="task-title done">Open speaker portal access</div><div class="task-meta"><span>38 active logins</span></div></div></div>
+              <div class="task-item"><div class="task-check todo"></div><div class="task-text"><div class="task-title">Collect all bios &amp; headshots</div><div class="task-meta"><span>14 outstanding</span></div></div><div class="task-due">Due Apr 15</div></div>
+              <div class="task-item"><div class="task-check todo"></div><div class="task-text"><div class="task-title">Disclosure forms completed</div><div class="task-meta"><span>6 remaining</span></div></div><div class="task-due">Due Apr 20</div></div>
+              <div class="task-item"><div class="task-check todo"></div><div class="task-text"><div class="task-title">Media release / consent signed</div><div class="task-meta"><span>9 remaining</span></div></div><div class="task-due">Due May 1</div></div>
+              <div class="task-item"><div class="task-check todo"></div><div class="task-text"><div class="task-title">Session slides submitted</div><div class="task-meta"><span>Due 2 weeks before event</span></div></div><div class="task-due">Due Oct 1</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ EXHIBITORS ══ -->
+      <div class="page" id="page-exhibitors">
+        <div class="page-header">
+          <h1>Exhibitor & Sponsor Management</h1>
+          <p>Contracts, payments, booths, self-service portal, and post-event reporting</p>
+        </div>
+        <div class="kpi-grid">
+          <div class="kpi-card"><div class="kpi-icon">🏢</div><div class="kpi-label">Exhibitors</div><div class="kpi-value">24</div><div class="kpi-delta up">↑ 6 spots remaining</div></div>
+          <div class="kpi-card"><div class="kpi-icon">🏆</div><div class="kpi-label">Sponsors</div><div class="kpi-value">11</div><div class="kpi-delta neutral">3 tiers filled</div></div>
+          <div class="kpi-card"><div class="kpi-icon">💵</div><div class="kpi-label">Sponsor Revenue</div><div class="kpi-value">$180K</div><div class="kpi-delta up">↑ 75% of $240K goal</div></div>
+          <div class="kpi-card"><div class="kpi-icon">📊</div><div class="kpi-label">Contracts Signed</div><div class="kpi-value">32 / 35</div><div class="kpi-delta yellow">3 pending signature</div></div>
+        </div>
+        <div class="two-col">
+          <div class="card">
+            <div class="card-head"><h3>Sponsor Tiers</h3></div>
+            <div class="card-body" style="padding-top:8px;padding-bottom:8px;">
+              <div class="exhibitor-row">
+                <div class="exhibitor-logo" style="background:#f59e0b">P</div>
+                <div class="exhibitor-info"><div class="exhibitor-name">TechCorp Inc.</div><div class="exhibitor-tier">Platinum Sponsor</div></div>
+                <span class="pill green">Paid</span>
+                <div class="exhibitor-amount">$40,000</div>
+              </div>
+              <div class="exhibitor-row">
+                <div class="exhibitor-logo" style="background:#94a3b8">G</div>
+                <div class="exhibitor-info"><div class="exhibitor-name">Innovate Partners</div><div class="exhibitor-tier">Gold Sponsor</div></div>
+                <span class="pill green">Paid</span>
+                <div class="exhibitor-amount">$25,000</div>
+              </div>
+              <div class="exhibitor-row">
+                <div class="exhibitor-logo" style="background:#94a3b8">G</div>
+                <div class="exhibitor-info"><div class="exhibitor-name">DataStream Co.</div><div class="exhibitor-tier">Gold Sponsor</div></div>
+                <span class="pill yellow">Invoice Sent</span>
+                <div class="exhibitor-amount">$25,000</div>
+              </div>
+              <div class="exhibitor-row">
+                <div class="exhibitor-logo" style="background:#cd7c2f">S</div>
+                <div class="exhibitor-info"><div class="exhibitor-name">CloudBase LLC</div><div class="exhibitor-tier">Silver Sponsor</div></div>
+                <span class="pill green">Paid</span>
+                <div class="exhibitor-amount">$10,000</div>
+              </div>
+              <div class="exhibitor-row">
+                <div class="exhibitor-logo" style="background:#cd7c2f">S</div>
+                <div class="exhibitor-info"><div class="exhibitor-name">AgileWorks Inc.</div><div class="exhibitor-tier">Silver Sponsor</div></div>
+                <span class="pill orange">Contract Pending</span>
+                <div class="exhibitor-amount">$10,000</div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-head"><h3>Sponsorship Goal</h3></div>
+            <div class="card-body">
+              <div class="progress-wrap">
+                <div class="progress-label"><span>Platinum ($40K × 2)</span><strong>$40K / $80K</strong></div>
+                <div class="progress-bar"><div class="progress-fill orange" style="width:50%"></div></div>
+              </div>
+              <div class="progress-wrap">
+                <div class="progress-label"><span>Gold ($25K × 4)</span><strong>$50K / $100K</strong></div>
+                <div class="progress-bar"><div class="progress-fill" style="width:50%"></div></div>
+              </div>
+              <div class="progress-wrap">
+                <div class="progress-label"><span>Silver ($10K × 6)</span><strong>$60K / $60K</strong></div>
+                <div class="progress-bar"><div class="progress-fill green" style="width:100%"></div></div>
+              </div>
+              <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border)">
+                <div class="stat-row"><span class="stat-row-label">Total Collected</span><span class="stat-row-val">$150,000</span></div>
+                <div class="stat-row"><span class="stat-row-label">Invoiced (Pending)</span><span class="stat-row-val">$30,000</span></div>
+                <div class="stat-row"><span class="stat-row-label">Remaining to Goal</span><span class="stat-row-val" style="color:var(--orange)">$60,000</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <h3>Booth Assignments — Floor 2, Hall B</h3>
+            <button class="topbar-btn ghost" style="font-size:12px;padding:6px 12px;">View Floor Plan</button>
+          </div>
+          <div class="card-body" style="padding-top:4px;padding-bottom:4px;">
+            <table class="data-table">
+              <thead><tr><th>Company</th><th>Booth #</th><th>Size</th><th>Portal Access</th><th>Contract</th><th>Payment</th></tr></thead>
+              <tbody>
+                <tr><td><strong>TechCorp Inc.</strong></td><td>A1 (Corner)</td><td>20×20</td><td><span class="pill green">Active</span></td><td><span class="pill green">Signed</span></td><td><span class="pill green">Paid</span></td></tr>
+                <tr><td><strong>Innovate Partners</strong></td><td>B3</td><td>10×20</td><td><span class="pill green">Active</span></td><td><span class="pill green">Signed</span></td><td><span class="pill green">Paid</span></td></tr>
+                <tr><td><strong>DataStream Co.</strong></td><td>B5</td><td>10×20</td><td><span class="pill yellow">Pending</span></td><td><span class="pill green">Signed</span></td><td><span class="pill yellow">Invoice</span></td></tr>
+                <tr><td><strong>CloudBase LLC</strong></td><td>C2</td><td>10×10</td><td><span class="pill green">Active</span></td><td><span class="pill green">Signed</span></td><td><span class="pill green">Paid</span></td></tr>
+                <tr><td><strong>AgileWorks Inc.</strong></td><td>TBD</td><td>10×10</td><td><span class="pill gray">Not Created</span></td><td><span class="pill orange">Pending</span></td><td><span class="pill gray">Not Due</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ MARKETING ══ -->
+      <div class="page" id="page-marketing">
+        <div class="page-header">
+          <h1>Marketing & Audience Growth</h1>
+          <p>Campaigns, conversions, social, and sponsor analytics</p>
+        </div>
+        <div class="kpi-grid">
+          <div class="kpi-card"><div class="kpi-icon">📧</div><div class="kpi-label">Emails Sent</div><div class="kpi-value">48,200</div><div class="kpi-delta up">↑ 31% avg open rate</div></div>
+          <div class="kpi-card"><div class="kpi-icon">🔗</div><div class="kpi-label">Reg. Conversions</div><div class="kpi-value">34.2%</div><div class="kpi-delta up">↑ +6% vs baseline</div></div>
+          <div class="kpi-card"><div class="kpi-icon">📲</div><div class="kpi-label">Social Impressions</div><div class="kpi-value">284K</div><div class="kpi-delta up">↑ Last 30 days</div></div>
+          <div class="kpi-card"><div class="kpi-icon">🎯</div><div class="kpi-label">Ad Spend ROI</div><div class="kpi-value">4.2×</div><div class="kpi-delta up">↑ vs 3.1× goal</div></div>
+        </div>
+        <div class="two-col">
+          <div class="card">
+            <div class="card-head"><h3>Email Campaigns</h3><button class="topbar-btn primary" style="font-size:12px;padding:6px 12px;">+ New Campaign</button></div>
+            <div class="card-body" style="padding-top:4px;padding-bottom:4px;">
+              <table class="data-table">
+                <thead><tr><th>Campaign</th><th>Sent</th><th>Open Rate</th><th>Clicks</th><th>Status</th></tr></thead>
+                <tbody>
+                  <tr><td>Save the Date</td><td>15,400</td><td>42%</td><td>18%</td><td><span class="pill green">Sent</span></td></tr>
+                  <tr><td>Speaker Announcement</td><td>15,400</td><td>38%</td><td>22%</td><td><span class="pill green">Sent</span></td></tr>
+                  <tr><td>Early Bird Reminder</td><td>12,400</td><td>28%</td><td>15%</td><td><span class="pill green">Sent</span></td></tr>
+                  <tr><td>Agenda Preview</td><td>—</td><td>—</td><td>—</td><td><span class="pill yellow">Scheduled</span></td></tr>
+                  <tr><td>Last Chance Registration</td><td>—</td><td>—</td><td>—</td><td><span class="pill gray">Draft</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-head"><h3>Channel Performance</h3></div>
+            <div class="card-body">
+              <div class="progress-wrap">
+                <div class="progress-label"><span>Email Campaigns</span><strong>487 registrations</strong></div>
+                <div class="progress-bar"><div class="progress-fill" style="width:78%"></div></div>
+              </div>
+              <div class="progress-wrap">
+                <div class="progress-label"><span>LinkedIn</span><strong>312 registrations</strong></div>
+                <div class="progress-bar"><div class="progress-fill orange" style="width:50%"></div></div>
+              </div>
+              <div class="progress-wrap">
+                <div class="progress-label"><span>Organic / Website</span><strong>264 registrations</strong></div>
+                <div class="progress-bar"><div class="progress-fill green" style="width:42%"></div></div>
+              </div>
+              <div class="progress-wrap">
+                <div class="progress-label"><span>Paid Search</span><strong>184 registrations</strong></div>
+                <div class="progress-bar"><div class="progress-fill" style="width:30%; background:var(--purple)"></div></div>
+              </div>
+              <div class="stat-row" style="margin-top:8px"><span class="stat-row-label">Total Budget Spent</span><span class="stat-row-val">$18,400</span></div>
+              <div class="stat-row"><span class="stat-row-label">Cost Per Registration</span><span class="stat-row-val">$14.76</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3>Promotional Timeline</h3></div>
+          <div class="card-body" style="padding-top:8px">
+            <div class="timeline">
+              <div class="tl-item"><div class="tl-dot green"></div><div class="tl-date">Jan 10, 2026</div><div class="tl-title">Save the Date blast + website launch</div><div class="tl-desc">15,400 contacts · 42% open rate</div></div>
+              <div class="tl-item"><div class="tl-dot green"></div><div class="tl-date">Feb 1, 2026</div><div class="tl-title">Early bird pricing opens + speaker announcement</div><div class="tl-desc">LinkedIn campaign launched</div></div>
+              <div class="tl-item"><div class="tl-dot green"></div><div class="tl-date">Mar 15, 2026</div><div class="tl-title">Early bird reminder email</div><div class="tl-desc">28% open rate · 124 immediate registrations</div></div>
+              <div class="tl-item"><div class="tl-dot orange"></div><div class="tl-date">May 15, 2026</div><div class="tl-title">Early bird deadline + agenda preview email</div><div class="tl-desc">Scheduled</div></div>
+              <div class="tl-item"><div class="tl-dot gray"></div><div class="tl-date">Aug 1, 2026</div><div class="tl-title">Full agenda + speaker spotlight series</div><div class="tl-desc">Not started</div></div>
+              <div class="tl-item"><div class="tl-dot gray"></div><div class="tl-date">Sep 15, 2026</div><div class="tl-title">Last chance registration push</div><div class="tl-desc">Not started</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ FINANCE ══ -->
+      <div class="page" id="page-finance">
+        <div class="page-header">
+          <h1>Financial Management & Reporting</h1>
+          <p>Budget, actuals, forecasting, reconciliation, and audit readiness</p>
+        </div>
+        <div class="kpi-grid">
+          <div class="kpi-card"><div class="kpi-icon">📥</div><div class="kpi-label">Total Revenue</div><div class="kpi-value">$284K</div><div class="kpi-delta up">↑ 71% of $400K goal</div></div>
+          <div class="kpi-card"><div class="kpi-icon">📤</div><div class="kpi-label">Total Expenses</div><div class="kpi-value">$162K</div><div class="kpi-delta neutral">54% of $300K budget</div></div>
+          <div class="kpi-card"><div class="kpi-icon">💹</div><div class="kpi-label">Net Surplus</div><div class="kpi-value">$122K</div><div class="kpi-delta up">↑ On track for $100K target</div></div>
+          <div class="kpi-card"><div class="kpi-icon">⏳</div><div class="kpi-label">Outstanding AR</div><div class="kpi-value">$47K</div><div class="kpi-delta yellow">3 invoices pending</div></div>
+        </div>
+        <div class="two-col">
+          <div class="card">
+            <div class="card-head"><h3>Budget vs. Actuals</h3></div>
+            <div class="card-body" style="padding-top:4px;padding-bottom:4px;">
+              <div style="display:grid;grid-template-columns:1fr 90px 90px 70px;padding:0 0 8px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gray-light);">
+                <span>Category</span><span style="text-align:right">Budget</span><span style="text-align:right">Actual</span><span style="text-align:right">Var</span>
+              </div>
+              <div class="sec-divider" style="margin:8px 0 4px"><h3 style="font-size:11px;color:var(--orange)">REVENUE</h3></div>
+              <div class="budget-row"><div class="budget-cat">Registration Fees</div><div class="budget-budgeted">$160,000</div><div class="budget-actual">$197,300</div><div class="budget-var under">+$37.3K</div></div>
+              <div class="budget-row"><div class="budget-cat">Sponsorships</div><div class="budget-budgeted">$140,000</div><div class="budget-actual">$180,000</div><div class="budget-var under">+$40K</div></div>
+              <div class="budget-row"><div class="budget-cat">Exhibitor Fees</div><div class="budget-budgeted">$60,000</div><div class="budget-actual">$48,200</div><div class="budget-var over">-$11.8K</div></div>
+              <div class="budget-row"><div class="budget-cat">Other Income</div><div class="budget-budgeted">$40,000</div><div class="budget-actual">$34,000</div><div class="budget-var over">-$6K</div></div>
+              <div class="sec-divider" style="margin:8px 0 4px"><h3 style="font-size:11px;color:var(--navy)">EXPENSES</h3></div>
+              <div class="budget-row"><div class="budget-cat">Venue &amp; F&amp;B</div><div class="budget-budgeted">$120,000</div><div class="budget-actual">$118,400</div><div class="budget-var under">-$1.6K</div></div>
+              <div class="budget-row"><div class="budget-cat">A/V &amp; Production</div><div class="budget-budgeted">$45,000</div><div class="budget-actual">$41,200</div><div class="budget-var under">-$3.8K</div></div>
+              <div class="budget-row"><div class="budget-cat">Marketing</div><div class="budget-budgeted">$30,000</div><div class="budget-actual">$18,400</div><div class="budget-var under">-$11.6K</div></div>
+              <div class="budget-row"><div class="budget-cat">Speaker &amp; Travel</div><div class="budget-budgeted">$40,000</div><div class="budget-actual">$0</div><div class="budget-var under">-$40K</div></div>
+              <div class="budget-row"><div class="budget-cat">Platform / Tech</div><div class="budget-budgeted">$15,000</div><div class="budget-actual">$9,200</div><div class="budget-var under">-$5.8K</div></div>
+            </div>
+          </div>
+          <div>
+            <div class="card" style="margin-bottom:20px">
+              <div class="card-head"><h3>Cash Flow</h3></div>
+              <div class="card-body">
+                <div class="stat-row"><span class="stat-row-label">Cash Collected</span><span class="stat-row-val" style="color:var(--green)">+$237,300</span></div>
+                <div class="stat-row"><span class="stat-row-label">Outstanding AR</span><span class="stat-row-val" style="color:var(--yellow)">$47,000</span></div>
+                <div class="stat-row"><span class="stat-row-label">Cash Spent</span><span class="stat-row-val" style="color:var(--red)">-$162,000</span></div>
+                <div class="stat-row"><span class="stat-row-label">Current Cash Balance</span><span class="stat-row-val">$75,300</span></div>
+                <div style="margin-top:16px;padding:14px;background:rgba(16,185,129,0.06);border-radius:10px;border:1px solid rgba(16,185,129,0.2);">
+                  <div style="font-size:12px;font-weight:700;color:var(--green);margin-bottom:4px;">↑ Ahead of Budget</div>
+                  <div style="font-size:12px;color:var(--gray)">Revenue is $77K above this point last year. Expense management is strong.</div>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-head"><h3>Pending Approvals</h3></div>
+              <div class="card-body" style="padding-top:4px;padding-bottom:4px;">
+                <div class="task-item"><div class="task-check todo"></div><div class="task-text"><div class="task-title">Catering upgrade — $8,400</div><div class="task-meta"><span>Requested by: Venue Coordinator</span></div></div><div class="task-due">Urgent</div></div>
+                <div class="task-item"><div class="task-check todo"></div><div class="task-text"><div class="task-title">AV streaming upgrade — $5,200</div><div class="task-meta"><span>Requested by: Tech Team</span></div></div><div class="task-due">Apr 30</div></div>
+                <div class="task-item"><div class="task-check done">✓</div><div class="task-text"><div class="task-title done">Keynote speaker honorarium — $3,000</div><div class="task-meta"><span>Approved by J. Miller</span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ VENUE ══ -->
+      <div class="page" id="page-venue">
+        <div class="page-header">
+          <h1>Venue & On-Site Management</h1>
+          <p>Venue contracts, hotel blocks, F&B, A/V, staffing, and risk planning</p>
+        </div>
+        <div class="kpi-grid">
+          <div class="kpi-card"><div class="kpi-icon">🏛️</div><div class="kpi-label">Venue</div><div class="kpi-value">Contracted</div><div class="kpi-delta up">↑ Chicago Conv. Ctr.</div></div>
+          <div class="kpi-card"><div class="kpi-icon">🛏️</div><div class="kpi-label">Hotel Block</div><div class="kpi-value">340 rooms</div><div class="kpi-delta neutral">178 claimed (52%)</div></div>
+          <div class="kpi-card"><div class="kpi-icon">🍽️</div><div class="kpi-label">F&B Commitment</div><div class="kpi-value">$48,000</div><div class="kpi-delta neutral">Minimum guarantee</div></div>
+          <div class="kpi-card"><div class="kpi-icon">👷</div><div class="kpi-label">Staff / Volunteers</div><div class="kpi-value">42</div><div class="kpi-delta up">↑ 28 confirmed</div></div>
+        </div>
+        <div class="three-col" style="margin-bottom:20px">
+          <div class="venue-card">
+            <div class="venue-thumb" style="background:rgba(26,51,153,0.08)">🏛️</div>
+            <div class="venue-body">
+              <div class="venue-name">Chicago Convention Center</div>
+              <div class="venue-loc">📍 McCormick Place, Chicago</div>
+              <span class="pill green">Primary Venue</span>
+              <div style="margin-top:12px;font-size:12px;color:var(--gray-light);line-height:1.6">
+                Main Ballroom: 3,200 cap<br>
+                Breakout Rooms: 8 × 150 seats<br>
+                Exhibit Hall: 24,000 sq ft
+              </div>
+            </div>
+          </div>
+          <div class="venue-card">
+            <div class="venue-thumb" style="background:rgba(232,93,20,0.08)">🏨</div>
+            <div class="venue-body">
+              <div class="venue-name">Marriott Chicago Downtown</div>
+              <div class="venue-loc">📍 0.3 miles from venue</div>
+              <span class="pill blue">Host Hotel</span>
+              <div style="margin-top:12px;font-size:12px;color:var(--gray-light);line-height:1.6">
+                Room Block: 340 rooms<br>
+                Rate: $189/night<br>
+                Cutoff: Sep 13, 2026
+              </div>
+            </div>
+          </div>
+          <div class="venue-card">
+            <div class="venue-thumb" style="background:rgba(16,185,129,0.08)">🎙️</div>
+            <div class="venue-body">
+              <div class="venue-name">ProAV Chicago</div>
+              <div class="venue-loc">📍 On-site vendor</div>
+              <span class="pill green">A/V Contracted</span>
+              <div style="margin-top:12px;font-size:12px;color:var(--gray-light);line-height:1.6">
+                Main stage LED wall<br>
+                8 breakout room setups<br>
+                Live streaming: 2 feeds
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="two-col">
+          <div class="card">
+            <div class="card-head"><h3>On-Site Logistics Checklist</h3></div>
+            <div class="card-body" style="padding-top:4px;padding-bottom:4px;">
+              <div class="task-item"><div class="task-check done">✓</div><div class="task-text"><div class="task-title done">Venue contract executed</div><div class="task-meta"><span>Signed Mar 1 · Deposit paid</span></div></div></div>
+              <div class="task-item"><div class="task-check done">✓</div><div class="task-text"><div class="task-title done">Host hotel block confirmed</div><div class="task-meta"><span>340 rooms · Cutoff Sep 13</span></div></div></div>
+              <div class="task-item"><div class="task-check done">✓</div><div class="task-text"><div class="task-title done">A/V vendor contracted</div><div class="task-meta"><span>ProAV Chicago · $41,200</span></div></div></div>
+              <div class="task-item"><div class="task-check todo"></div><div class="task-text"><div class="task-title">F&amp;B menu finalized</div><div class="task-meta"><span>Awaiting dietary count from reg</span></div></div><div class="task-due">Jun 1</div></div>
+              <div class="task-item"><div class="task-check todo"></div><div class="task-text"><div class="task-title">Signage &amp; branding order</div><div class="task-meta"><span>Design approval needed</span></div></div><div class="task-due">Jul 15</div></div>
+              <div class="task-item"><div class="task-check todo"></div><div class="task-text"><div class="task-title">Volunteer assignments confirmed</div><div class="task-meta"><span>14 shifts still open</span></div></div><div class="task-due">Sep 1</div></div>
+              <div class="task-item"><div class="task-check todo"></div><div class="task-text"><div class="task-title">Emergency &amp; contingency plan reviewed</div><div class="task-meta"><span>Venue walkthrough scheduled</span></div></div><div class="task-due">Sep 15</div></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-head"><h3>Risk & Contingency Planning</h3></div>
+            <div class="card-body" style="padding-top:8px;padding-bottom:8px;">
+              <div class="stat-row"><span class="stat-row-label">Weather contingency</span><span class="pill green">Indoor venue ✓</span></div>
+              <div class="stat-row"><span class="stat-row-label">Event cancellation insurance</span><span class="pill yellow">In Progress</span></div>
+              <div class="stat-row"><span class="stat-row-label">Backup A/V supplier</span><span class="pill green">Identified</span></div>
+              <div class="stat-row"><span class="stat-row-label">Medical / First Aid</span><span class="pill green">On-site medic</span></div>
+              <div class="stat-row"><span class="stat-row-label">Accessibility plan</span><span class="pill blue">ADA compliant</span></div>
+              <div class="stat-row"><span class="stat-row-label">Security staffing</span><span class="pill yellow">RFP out</span></div>
+              <div style="margin-top:16px;padding:14px;background:rgba(245,158,11,0.06);border-radius:10px;border:1px solid rgba(245,158,11,0.2);">
+                <div style="font-size:12px;font-weight:700;color:#d97706;margin-bottom:4px;">⚠ Action Required</div>
+                <div style="font-size:12px;color:var(--gray)">Cancellation insurance must be secured before May 1. Security vendor needs selection by June.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ GOVERNANCE ══ -->
+      <div class="page" id="page-governance">
+        <div class="page-header">
+          <h1>Governance & Project Management</h1>
+          <p>Timeline, milestones, decisions, escalations, and multi-association structure</p>
+        </div>
+        <div class="kpi-grid">
+          <div class="kpi-card"><div class="kpi-icon">✅</div><div class="kpi-label">Milestones Complete</div><div class="kpi-value">14 / 28</div><div class="kpi-delta up">↑ 50% on schedule</div></div>
+          <div class="kpi-card"><div class="kpi-icon">⚠️</div><div class="kpi-label">Open Action Items</div><div class="kpi-value">7</div><div class="kpi-delta yellow">3 overdue</div></div>
+          <div class="kpi-card"><div class="kpi-icon">🤝</div><div class="kpi-label">Associations</div><div class="kpi-value">3</div><div class="kpi-delta neutral">Governing partners</div></div>
+          <div class="kpi-card"><div class="kpi-icon">📅</div><div class="kpi-label">Next Steering Call</div><div class="kpi-value">Apr 22</div><div class="kpi-delta neutral">6 days away</div></div>
+        </div>
+        <div class="two-col">
+          <div class="card">
+            <div class="card-head"><h3>Master Project Timeline</h3></div>
+            <div class="card-body" style="padding-top:8px">
+              <div class="timeline">
+                <div class="tl-item"><div class="tl-dot green"></div><div class="tl-date">Jan 2026</div><div class="tl-title">Project kickoff & committee formation</div><div class="tl-desc">All governing associations aligned</div></div>
+                <div class="tl-item"><div class="tl-dot green"></div><div class="tl-date">Feb 2026</div><div class="tl-title">Venue contracts signed</div><div class="tl-desc">Chicago Convention Center + Marriott block</div></div>
+                <div class="tl-item"><div class="tl-dot green"></div><div class="tl-date">Mar 2026</div><div class="tl-title">Speaker call opens + platform live</div><div class="tl-desc">147 submissions received</div></div>
+                <div class="tl-item"><div class="tl-dot orange"></div><div class="tl-date">Apr 2026 — Now</div><div class="tl-title">Speaker selection + early bird closes May 15</div><div class="tl-desc">Education committee reviewing</div></div>
+                <div class="tl-item"><div class="tl-dot gray"></div><div class="tl-date">Jul 2026</div><div class="tl-title">Full program published</div><div class="tl-desc">CE documentation submitted to board</div></div>
+                <div class="tl-item"><div class="tl-dot gray"></div><div class="tl-date">Sep 2026</div><div class="tl-title">Final logistics lock</div><div class="tl-desc">F&B, staffing, badge production</div></div>
+                <div class="tl-item"><div class="tl-dot gray"></div><div class="tl-date">Oct 14–16</div><div class="tl-title">Conference execution</div><div class="tl-desc">On-site team · check-in · sessions · exhibits</div></div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="card" style="margin-bottom:20px">
+              <div class="card-head"><h3>Open Action Items <span class="pill orange">7 open</span></h3></div>
+              <div class="card-body" style="padding-top:4px;padding-bottom:4px;">
+                <div class="task-item"><div class="task-check todo" style="border-color:var(--red)"></div><div class="task-text"><div class="task-title">Finalize cancellation insurance</div><div class="task-meta"><span>Owner: J. Miller</span></div></div><div class="task-due" style="color:var(--red)">Overdue</div></div>
+                <div class="task-item"><div class="task-check todo" style="border-color:var(--red)"></div><div class="task-text"><div class="task-title">Security vendor selection</div><div class="task-meta"><span>Owner: Venue Coord.</span></div></div><div class="task-due" style="color:var(--red)">Overdue</div></div>
+                <div class="task-item"><div class="task-check todo" style="border-color:var(--red)"></div><div class="task-text"><div class="task-title">DataStream invoice follow-up</div><div class="task-meta"><span>Owner: Finance</span></div></div><div class="task-due" style="color:var(--red)">Overdue</div></div>
+                <div class="task-item"><div class="task-check todo"></div><div class="task-text"><div class="task-title">Speaker consent forms (9 remaining)</div><div class="task-meta"><span>Owner: Program Mgr</span></div></div><div class="task-due">May 1</div></div>
+                <div class="task-item"><div class="task-check todo"></div><div class="task-text"><div class="task-title">Salesforce CRM integration</div><div class="task-meta"><span>Owner: Tech Team</span></div></div><div class="task-due">May 15</div></div>
+                <div class="task-item"><div class="task-check todo"></div><div class="task-text"><div class="task-title">Agenda preview email campaign</div><div class="task-meta"><span>Owner: Marketing</span></div></div><div class="task-due">May 15</div></div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-head"><h3>Governing Partners</h3></div>
+              <div class="card-body" style="padding-top:8px;padding-bottom:8px;">
+                <div class="stat-row">
+                  <div><div style="font-size:13px;font-weight:600;color:var(--navy-dark)">Tech Association of IL</div><div style="font-size:11px;color:var(--gray-light)">Lead sponsoring organization</div></div>
+                  <span class="pill green">Lead</span>
+                </div>
+                <div class="stat-row">
+                  <div><div style="font-size:13px;font-weight:600;color:var(--navy-dark)">Chicago Innovation Hub</div><div style="font-size:11px;color:var(--gray-light)">Program co-sponsor</div></div>
+                  <span class="pill blue">Partner</span>
+                </div>
+                <div class="stat-row">
+                  <div><div style="font-size:13px;font-weight:600;color:var(--navy-dark)">Midwest Dev Network</div><div style="font-size:11px;color:var(--gray-light)">Community partner</div></div>
+                  <span class="pill blue">Partner</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /page-content -->
+  </main>
+</div><!-- /app -->
+
+<script>
+function doLogin() {
+  const email = document.getElementById('login-email').value;
+  const pw = document.getElementById('login-pw').value;
+  if (!email || !pw) { alert('Please enter credentials.'); return; }
+  document.getElementById('login-screen').style.opacity = '0';
+  document.getElementById('login-screen').style.transition = 'opacity 0.4s';
+  setTimeout(() => {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('app').classList.add('visible');
+  }, 400);
+}
+
+document.getElementById('login-pw').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
+
+function doLogout() {
+  document.getElementById('app').classList.remove('visible');
+  document.getElementById('login-screen').style.opacity = '0';
+  document.getElementById('login-screen').style.display = 'flex';
+  requestAnimationFrame(() => {
+    document.getElementById('login-screen').style.transition = 'opacity 0.3s';
+    document.getElementById('login-screen').style.opacity = '1';
+  });
+}
+
+const pageNames = {
+  dashboard: 'Dashboard',
+  platform: 'Technology & Platform',
+  program: 'Program & Speakers',
+  exhibitors: 'Exhibitors & Sponsors',
+  marketing: 'Marketing & Growth',
+  finance: 'Financial Management',
+  venue: 'Venue & On-Site',
+  governance: 'Governance & PMO'
+};
+
+const ctaLabels = {
+  dashboard: '+ New Conference',
+  platform: '+ Add Integration',
+  program: '+ Add Speaker',
+  exhibitors: '+ Add Exhibitor',
+  marketing: '+ New Campaign',
+  finance: '+ Add Transaction',
+  venue: '+ Add Venue',
+  governance: '+ Add Milestone'
+};
+
+function showPage(id, navEl) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  navEl.classList.add('active');
+  document.getElementById('topbar-title').textContent = pageNames[id] || id;
+  document.getElementById('topbar-cta').textContent = ctaLabels[id] || '+ New';
+}
+</script>
+</body>
+</html>
