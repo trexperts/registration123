@@ -1,4 +1,109 @@
-/* Apps Dropdown */
+/* ── Nav shell ── */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #fff;
+  border-bottom: 1px solid var(--border, #e5e7eb);
+}
+
+.inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+}
+
+/* ── Logo ── */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.logoIcon {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  background: var(--navy, #0f172a);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.logoNum {
+  font-size: 11px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.5px;
+  line-height: 1;
+  position: absolute;
+  top: 5px;
+  left: 5px;
+}
+
+.logoCheck {
+  width: 14px;
+  height: 10px;
+  position: absolute;
+  bottom: 5px;
+  right: 4px;
+}
+
+.logoR {
+  display: none;
+}
+
+.logoText {
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--navy, #0f172a);
+  letter-spacing: -0.3px;
+}
+
+.logoText em {
+  font-style: normal;
+  color: var(--orange, #e85d14);
+}
+
+/* ── Desktop nav links ── */
+.links {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.links a {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--gray, #6b7280);
+  text-decoration: none;
+  padding: 4px 0;
+  border-bottom: 2px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.links a:hover,
+.links a.active {
+  color: var(--navy, #0f172a);
+  border-bottom-color: var(--orange, #e85d14);
+}
+
+/* ── Apps Dropdown ── */
 .dropdown {
   position: relative;
 }
@@ -6,7 +111,7 @@
 .dropdownTrigger {
   font-size: 14px;
   font-weight: 500;
-  color: var(--gray);
+  color: var(--gray, #6b7280);
   background: none;
   border: none;
   cursor: pointer;
@@ -21,38 +126,25 @@
 
 .dropdownTrigger:hover,
 .dropdownTrigger.active {
-  color: var(--navy);
-  border-bottom-color: var(--orange);
+  color: var(--navy, #0f172a);
+  border-bottom-color: var(--orange, #e85d14);
 }
 
 .caret {
-
   display: inline-block;
-
   width: 8px;
-
   height: 8px;
-
   border-right: 2px solid currentColor;
-
   border-bottom: 2px solid currentColor;
-
   transform: rotate(45deg);
-
   transition: transform 0.2s;
-
   margin-bottom: 3px;
-
 }
- 
+
 .caretOpen {
-
   transform: rotate(-135deg);
-
   margin-bottom: -2px;
-
 }
- 
 
 .dropdownMenu {
   position: absolute;
@@ -60,7 +152,7 @@
   left: 50%;
   transform: translateX(-50%);
   background: white;
-  border: 1px solid var(--border);
+  border: 1px solid var(--border, #e5e7eb);
   border-radius: 10px;
   box-shadow: 0 8px 24px rgba(0,0,0,0.1);
   min-width: 180px;
@@ -73,7 +165,7 @@
   padding: 10px 14px;
   font-size: 14px;
   font-weight: 500;
-  color: var(--gray);
+  color: var(--gray, #6b7280);
   text-decoration: none;
   border-radius: 7px;
   transition: all 0.15s;
@@ -81,14 +173,93 @@
 }
 
 .dropdownItem:hover {
-  background: var(--orange);
+  background: var(--orange, #e85d14);
   color: white;
 }
 
-/* Mobile Apps Section */
+/* ── Nav right ── */
+.navRight {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-shrink: 0;
+}
+
+.navCta {
+  padding: 8px 18px;
+  background: var(--orange, #e85d14);
+  color: #fff;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+
+.navCta:hover {
+  background: #c94e0f;
+}
+
+/* ── Hamburger ── */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 36px;
+  height: 36px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.bar1, .bar2, .bar3,
+.bar1Open, .bar2Open, .bar3Open {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--navy, #0f172a);
+  border-radius: 2px;
+  transition: transform 0.25s, opacity 0.25s;
+  transform-origin: center;
+}
+
+.bar1Open  { transform: translateY(7px) rotate(45deg); }
+.bar2Open  { opacity: 0; }
+.bar3Open  { transform: translateY(-7px) rotate(-45deg); }
+
+/* ── Mobile menu ── */
+.mobileMenu {
+  display: none;
+  flex-direction: column;
+  padding: 0 24px 16px;
+  border-top: 1px solid var(--border, #e5e7eb);
+  background: #fff;
+}
+
+.mobileMenuOpen {
+  display: flex;
+}
+
+.mobileLink {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--gray, #6b7280);
+  text-decoration: none;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border, #e5e7eb);
+  transition: color 0.2s;
+}
+
+.mobileLink:hover {
+  color: var(--navy, #0f172a);
+}
+
 .mobileAppsSection {
   padding: 8px 0;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--border, #e5e7eb);
 }
 
 .mobileAppsLabel {
@@ -97,7 +268,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--orange);
+  color: var(--orange, #e85d14);
   padding: 8px 0 4px;
 }
 
@@ -105,12 +276,36 @@
   display: block;
   font-size: 16px;
   font-weight: 500;
-  color: var(--gray);
+  color: var(--gray, #6b7280);
   text-decoration: none;
   padding: 10px 0 10px 12px;
   transition: color 0.2s;
 }
 
 .mobileAppLink:hover {
-  color: var(--navy);
+  color: var(--navy, #0f172a);
+}
+
+.mobileCta {
+  margin-top: 16px;
+  padding: 12px 18px;
+  background: var(--orange, #e85d14);
+  color: #fff;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  text-align: center;
+  transition: background 0.2s;
+}
+
+.mobileCta:hover {
+  background: #c94e0f;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .links { display: none; }
+  .navCta { display: none; }
+  .hamburger { display: flex; }
 }
